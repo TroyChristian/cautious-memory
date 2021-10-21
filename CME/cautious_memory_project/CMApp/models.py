@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+import datetime
 
 # Register your models here.
 
@@ -29,8 +30,18 @@ class Journal(models.Model):
         return "%s journal in %s" % (self.tracked_asset.ticker, self.tracked_asset.owner_portfolio)
 
 class Entry(models.Model):
+    ENTRY_CHOICES = (
+    ("credit", "credit"),
+    ("debit", "debit"),
+    )
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-    # Tx Type, Asset, Date, Fiat Value, Amount Asset
+    entry_type = ENTRY_CHOICES
+    date = models.DateField(default=datetime.date.today) #allows user to overide
+    fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
+    asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
+
+
+
 
     def __str__(self):
         return " Entry in %s" (self.journal)

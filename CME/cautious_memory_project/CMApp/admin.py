@@ -21,4 +21,4 @@ class JournalAdmin(admin.ModelAdmin):
 
 @admin.register(myModels.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    fields = ("journal", )
+    fields = ("journal", "entry_type", "fiat_value", "asset_value", "date" )
