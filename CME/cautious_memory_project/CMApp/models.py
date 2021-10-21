@@ -9,8 +9,10 @@ class Portfolio(models.Model):
 class Asset(models.Model):
     owner_portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name="assets")
     ticker = models.CharField(null=False, max_length=100)
-    #Journal = List of transactions associated with this Asset, in this portfolio
-    # Fiat In, Asset In, Average Price In
+    fiat = models.DecimalField(max_digits=12, decimal_places=2) ##nine hundred ninety nine billion
+    asset = models.DecimalField(max_digits=12, decimal_places=8) # A decimal places to represent a sat
+    price_avg = models.DecimalField(max_digits=12, decimal_places=2)
+    
 class Entry(models.Model):
     pass
     # Tx Type, Asset, Date, Fiat Value, Amount Asset
