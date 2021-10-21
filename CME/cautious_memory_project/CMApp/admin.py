@@ -9,16 +9,16 @@ from . import models as myModels
 
 @admin.register(myModels.Portfolio)
 class PortfolioAdmin(admin.ModelAdmin):
-    pass
+    fields = ('owner',)
 
 @admin.register(myModels.Asset)
 class AssetAdmin(admin.ModelAdmin):
-    pass
+    fields = ("owner_portfolio", "ticker")
 
 @admin.register(myModels.Journal)
 class JournalAdmin(admin.ModelAdmin):
-    pass
+    fields = ("tracked_asset",)
 
 @admin.register(myModels.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    pass
+    fields = ("journal", )

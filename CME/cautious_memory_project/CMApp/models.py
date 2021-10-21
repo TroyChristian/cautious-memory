@@ -6,7 +6,7 @@ from decimal import Decimal
 
 class Portfolio(models.Model):
     owner = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    owner
+
 
     def __str__(self):
         return "%s's portfolio" % (self.owner.username)
@@ -18,11 +18,19 @@ class Asset(models.Model):
     asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
     price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
 
+    def __str__(self):
+        return "Asset: %s \n Belongs To: %s"% (self.ticker, self.owner_portfolio)
+
 
 class Journal(models.Model):
     tracked_asset = models.OneToOneField(Asset, on_delete=models.CASCADE, related_name="journal", primary_key=True)
 
+    def __str__(self):
+        return "%s journal in %s" % (self.tracked_asset.ticker, self.tracked_asset.owner_portfolio)
 
 class Entry(models.Model):
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
     # Tx Type, Asset, Date, Fiat Value, Amount Asset
+
+    def __str__(self):
+        return " Entry in %s" (self.journal)
