@@ -15,6 +15,10 @@ class PortfolioAdmin(admin.ModelAdmin):
 class AssetAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(myModels.Journal)
+class JournalAdmin(admin.ModelAdmin):
+    pass
+
 @admin.register(myModels.Entry)
 class EntryAdmin(admin.ModelAdmin):
     pass
