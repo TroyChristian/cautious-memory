@@ -9,16 +9,20 @@ from . import models as myModels
 
 @admin.register(myModels.Portfolio)
 class PortfolioAdmin(admin.ModelAdmin):
-    fields = ('owner',)
+    list_display = ('owner',)
+    #list_editable = ('owner',)
 
 @admin.register(myModels.Asset)
 class AssetAdmin(admin.ModelAdmin):
-    fields = ("owner_portfolio", "ticker")
+    list_display = ("owner_portfolio", "ticker")
+
 
 @admin.register(myModels.Journal)
 class JournalAdmin(admin.ModelAdmin):
-    fields = ("tracked_asset",)
+    list_display = ("tracked_asset",)
+    #list_editable = ("tracked_asset",)
 
 @admin.register(myModels.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    fields = ("journal", "entry_type", "fiat_value", "asset_value", "date" )
+    list_display = ("journal", "entry_type", "fiat_value", "asset_value", "date" )
+    #list_editable = ("journal", "entry_type", "fiat_value", "asset_value", "date" )

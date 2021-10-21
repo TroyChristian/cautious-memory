@@ -35,7 +35,7 @@ class Entry(models.Model):
     ("debit", "debit"),
     )
     journal = models.ForeignKey(Journal, on_delete=models.CASCADE)
-    entry_type = ENTRY_CHOICES
+    entry_type = models.CharField(null=False, choices=ENTRY_CHOICES, max_length=6, default='credit')
     date = models.DateField(default=datetime.date.today) #allows user to overide
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
@@ -44,4 +44,4 @@ class Entry(models.Model):
 
 
     def __str__(self):
-        return " Entry in %s" (self.journal)
+        return " Entry in %s" % (self.journal)
