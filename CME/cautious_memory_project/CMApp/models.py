@@ -15,9 +15,13 @@ class Portfolio(models.Model):
 class Asset(models.Model):
     owner_portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name="assets")
     ticker = models.CharField(null=False, max_length=100)
-    fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
-    asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
-    price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
+    # fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
+    # asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
+    # price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
+
+    def snapshot(self):
+        pass
+        #journal_query = self.journal.
 
     def __str__(self):
         return "Asset: %s \n Belongs To: %s"% (self.ticker, self.owner_portfolio)
@@ -25,6 +29,21 @@ class Asset(models.Model):
 
 class Journal(models.Model):
     tracked_asset = models.OneToOneField(Asset, on_delete=models.CASCADE, related_name="journal", primary_key=True)
+
+    def sum_entries(self):
+        fiat = 0
+        asset = 0
+        avg_price = 0
+        entry_qs = Entry.objects.get_queryset().filter(journal=self)
+        for entry in entry_qs:
+            fiat += entry.fiat_value
+            asset += entry.asset_value
+
+        avg_price = fiat / asset
+        return avg_price
+
+
+
 
     def __str__(self):
         return "%s journal in %s" % (self.tracked_asset.ticker, self.tracked_asset.owner_portfolio)
@@ -39,6 +58,8 @@ class Entry(models.Model):
     date = models.DateField(default=datetime.date.today) #allows user to overide
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
+
+
 
 
 
