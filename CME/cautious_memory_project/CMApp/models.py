@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 import datetime
 from django.dispatch import receiver
-from django.db.models.signals import pre_save, post_save 
+from django.db.models.signals import pre_save, post_save
 
 # Register your models here.
 
@@ -73,7 +73,7 @@ class Entry(models.Model):
     def __str__(self):
         return " Entry in %s" % (self.journal)
 
-
+###ENTRY MODEL SIGNALS###
 def make_debits_negative(sender, instance, **kwargs):
     if instance.entry_type == "credit": #if user is adding funds pass, might put a check here if they use a - sign  or validate in in the form
         pass
@@ -92,3 +92,21 @@ def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
     instance_tracked_asset.snapshot()
     return
 post_save.connect(calculate_snapshot_upon_new_entry, sender=Entry)
+
+
+###USER MODEL SIGNALS###
+
+#Create portfolio upon new user creation
+def create_user_portfolio(sender, instance, created, **kwargs):
+    if created:
+        Portfolio.objects.create(owner=instance)
+    return
+post_save.connect(create_user_portfolio, sender=User)
+
+
+###ASSET MODEL SIGNALS###
+def create_asset_journal(sender, instance, created, **kwargs):
+    if created:
+        Journal.objects.create(tracked_asset=instance)
+    return
+post_save.connect(create_asset_journal, sender=Asset)
