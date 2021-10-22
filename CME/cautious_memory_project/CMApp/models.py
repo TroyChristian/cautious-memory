@@ -15,13 +15,15 @@ class Portfolio(models.Model):
 class Asset(models.Model):
     owner_portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name="assets")
     ticker = models.CharField(null=False, max_length=100)
-    # fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
-    # asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
-    # price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
+    fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
+    asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
+    price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
 
     def snapshot(self):
-        pass
-        #journal_query = self.journal.
+
+        snapshot = self.journal.sum_entries()
+        (self.fiat, self.asset, self.price_avg) = snapshot
+        return
 
     def __str__(self):
         return "Asset: %s \n Belongs To: %s"% (self.ticker, self.owner_portfolio)
@@ -40,7 +42,7 @@ class Journal(models.Model):
             asset += entry.asset_value
 
         avg_price = fiat / asset
-        return avg_price
+        return (fiat, asset, avg_price)
 
 
 
@@ -59,7 +61,7 @@ class Entry(models.Model):
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
 
-
+    #before an Entry is saved, switch its sign to negative if its a debit.
 
 
 
