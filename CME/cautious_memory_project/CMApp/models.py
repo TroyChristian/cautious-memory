@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
 import datetime
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 # Register your models here.
 
@@ -22,7 +24,8 @@ class Asset(models.Model):
     def snapshot(self):
 
         snapshot = self.journal.sum_entries()
-        (self.fiat, self.asset, self.price_avg) = snapshot
+        (self.fiat, self.asset, self.price_avg) = snapshot #unpack tuple values into asset
+        self.save()
         return
 
     def __str__(self):
@@ -66,5 +69,19 @@ class Entry(models.Model):
 
 
 
+
     def __str__(self):
         return " Entry in %s" % (self.journal)
+
+
+def make_debits_negative(sender, instance, **kwargs):
+    if instance.entry_type == "credit": #if user is adding funds pass, might put a check here if they use a - sign  or validate in in the form
+        pass
+    else:
+        signed_fiat_value = -instance.fiat_value
+        signed_asset_value = -instance.asset_value
+            #assign signed values
+        instance.fiat_value = signed_fiat_value
+        instance.asset_value = signed_asset_value
+    return
+pre_save.connect(make_debits_negative, sender=Entry)
