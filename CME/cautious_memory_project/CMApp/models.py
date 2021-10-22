@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 import datetime
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save 
 
 # Register your models here.
 
@@ -64,7 +64,7 @@ class Entry(models.Model):
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
 
-    #before an Entry is saved, switch its sign to negative if its a debit.
+
 
 
 
@@ -85,3 +85,10 @@ def make_debits_negative(sender, instance, **kwargs):
         instance.asset_value = signed_asset_value
     return
 pre_save.connect(make_debits_negative, sender=Entry)
+
+def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
+    instance_journal = instance.journal
+    instance_tracked_asset = instance_journal.tracked_asset
+    instance_tracked_asset.snapshot()
+    return
+post_save.connect(calculate_snapshot_upon_new_entry, sender=Entry)
