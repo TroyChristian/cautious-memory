@@ -28,6 +28,12 @@ class Asset(models.Model):
         self.save()
         return
 
+    def delete_asset(self):
+        asset_qs = Asset.objects.get(id__exact=self.id)
+        asset_qs.delete()
+        return
+
+
     def __str__(self):
         return "Asset: %s \n Belongs To: %s"% (self.ticker, self.owner_portfolio)
 
@@ -64,7 +70,25 @@ class Entry(models.Model):
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
 
-
+    def update_entry(self, fiat=None, asset=None, date=None, type=None):
+        try:
+            if fiat != None:
+                self.fiat_value = Decimal(fiat)
+            if asset != None:
+                self.asset_value = Decimal(asset)
+            if date != None:
+                self.date = date
+            if type != None:
+                self.entry_type = type
+        except Exception as  error:
+            print("An error occured:%s" % error)
+            return
+        try:
+            self.save()
+        except Exception as error:
+            print("An error occured:%s" % error)
+        finally:
+            return
 
 
 
@@ -92,6 +116,9 @@ def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
     instance_tracked_asset.snapshot()
     return
 post_save.connect(calculate_snapshot_upon_new_entry, sender=Entry)
+
+
+
 
 
 ###USER MODEL SIGNALS###
