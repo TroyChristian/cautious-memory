@@ -28,6 +28,12 @@ class Asset(models.Model):
         self.save()
         return
 
+    def delete_asset(self):
+        asset_qs = Asset.objects.get(id__exact=self.id)
+        asset_qs.delete()
+        return
+
+
     def __str__(self):
         return "Asset: %s \n Belongs To: %s"% (self.ticker, self.owner_portfolio)
 
@@ -64,7 +70,24 @@ class Entry(models.Model):
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
 
+    def update_entry(self, fiat=None, asset=None, type=None):
+        try:
+            if fiat != None:
+                self.fiat_value = Decimal(fiat)
+            if asset != None:
+                self.asset_value = Decimal(asset)
+            if type != None and type == 'credit' or type =='debit':
+                self.entry_type = type # Switch type
 
+        except Exception as  error:
+            print("An error occured:%s" % error)
+            return
+        try:
+            self.save()
+        except Exception as error:
+            print("An error occured:%s" % error)
+        finally:
+            return
 
 
 
@@ -75,14 +98,19 @@ class Entry(models.Model):
 
 ###ENTRY MODEL SIGNALS###
 def make_debits_negative(sender, instance, **kwargs):
-    if instance.entry_type == "credit": #if user is adding funds pass, might put a check here if they use a - sign  or validate in in the form
-        pass
+    if instance.entry_type == "credit":
+            signed_fiat_value = abs(instance.fiat_value)
+            signed_asset_value = abs(instance.asset_value)
+                #assign positive values
+            instance.fiat_value = signed_fiat_value
+            instance.asset_value = signed_asset_value
     else:
         signed_fiat_value = -instance.fiat_value
         signed_asset_value = -instance.asset_value
             #assign signed values
         instance.fiat_value = signed_fiat_value
         instance.asset_value = signed_asset_value
+
     return
 pre_save.connect(make_debits_negative, sender=Entry)
 
@@ -92,6 +120,9 @@ def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
     instance_tracked_asset.snapshot()
     return
 post_save.connect(calculate_snapshot_upon_new_entry, sender=Entry)
+
+
+
 
 
 ###USER MODEL SIGNALS###
