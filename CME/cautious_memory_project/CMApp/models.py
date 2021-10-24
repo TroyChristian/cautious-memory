@@ -70,16 +70,15 @@ class Entry(models.Model):
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
 
-    def update_entry(self, fiat=None, asset=None, date=None, type=None):
+    def update_entry(self, fiat=None, asset=None, type=None):
         try:
             if fiat != None:
                 self.fiat_value = Decimal(fiat)
             if asset != None:
                 self.asset_value = Decimal(asset)
-            if date != None:
-                self.date = date
-            if type != None:
-                self.entry_type = type
+            if type != None and type == 'credit' or type =='debit':
+                self.entry_type = type # Switch type
+
         except Exception as  error:
             print("An error occured:%s" % error)
             return
@@ -99,14 +98,19 @@ class Entry(models.Model):
 
 ###ENTRY MODEL SIGNALS###
 def make_debits_negative(sender, instance, **kwargs):
-    if instance.entry_type == "credit": #if user is adding funds pass, might put a check here if they use a - sign  or validate in in the form
-        pass
+    if instance.entry_type == "credit":
+            signed_fiat_value = abs(instance.fiat_value)
+            signed_asset_value = abs(instance.asset_value)
+                #assign positive values
+            instance.fiat_value = signed_fiat_value
+            instance.asset_value = signed_asset_value
     else:
         signed_fiat_value = -instance.fiat_value
         signed_asset_value = -instance.asset_value
             #assign signed values
         instance.fiat_value = signed_fiat_value
         instance.asset_value = signed_asset_value
+
     return
 pre_save.connect(make_debits_negative, sender=Entry)
 
