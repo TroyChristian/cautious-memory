@@ -69,7 +69,7 @@ class Entry(models.Model):
     date = models.DateField(default=datetime.date.today) #allows user to overide
     fiat_value =  models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_value = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000'))
-
+    price_of_asset = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     def update_entry(self, fiat=None, asset=None, type=None):
         try:
             if fiat != None:
@@ -87,6 +87,9 @@ class Entry(models.Model):
         except Exception as error:
             print("An error occured:%s" % error)
         finally:
+            journal = self.journal
+            asset = journal.tracked_asset
+            asset.snapshot() #create the snapshot after the edited entry is saved
             return
 
 
@@ -113,6 +116,12 @@ def make_debits_negative(sender, instance, **kwargs):
 
     return
 pre_save.connect(make_debits_negative, sender=Entry)
+
+def calculate_price_of_asset(sender, instance, **kwargs):
+    price_of_asset = instance.fiat_value / instance.asset_value
+    instance.price_of_asset = Decimal(price_of_asset)
+    return
+pre_save.connect(calculate_price_of_asset, sender=Entry)
 
 def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
     instance_journal = instance.journal
