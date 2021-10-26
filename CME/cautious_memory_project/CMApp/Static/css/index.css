@@ -1,7 +1,8 @@
 :root {
     --background-color: #148a07;
     --main-color: #fff;
-    --secondary-color: #d6cb00;
+    --secondary-color: gold;
+    --dark-color-main: black;
 }
 
 body {
@@ -10,14 +11,32 @@ body {
 
 h3 {
     color: var(--background-color);
-    border: solid 1px green;
+    border: solid 1px var(--main-color);
     background-color: var(--secondary-color);
 }
 
-.assests {
+
+.box {
+    background-color: var(--main-color);
+    border: solid 5px var(--secondary-color);
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+    justify-content: space-evenly;
+}
+
+.grid-container {
     display: grid;
-    border: gold solid 3px;
-    padding: 120px;
-    background-color: var(--main-color); 
-    height: 75%;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    background-color: var(--dark-color-main);
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.grid-container > div {
+    background-color: var(--main-color);
+    text-align: center;
+    padding: 15px 0px;
+    font-size: 15px;
 }
