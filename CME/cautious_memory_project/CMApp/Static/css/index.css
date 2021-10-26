@@ -48,7 +48,7 @@ h3 {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 15px;
     background-color: var(--dark-color-main);
     padding: 10px;
@@ -60,4 +60,8 @@ h3 {
     text-align: center;
     padding: 15px 0px;
     font-size: 15px;
+}
+
+.edit .grid-container {
+    border-radius: 2px;
 }
