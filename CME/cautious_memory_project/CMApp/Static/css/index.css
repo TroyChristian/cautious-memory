@@ -25,6 +25,27 @@ h3 {
     justify-content: space-evenly;
 }
 
+
+.snap-shot {
+    border: var(--dark-color-main) solid 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    background-color: var(--dark-color-main);
+    padding: 10px;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.snap-shot > div {
+    background-color: var(--main-color);
+    text-align: center;
+    padding: 15px 0px;
+    font-size: 15px;
+}
+
+
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
