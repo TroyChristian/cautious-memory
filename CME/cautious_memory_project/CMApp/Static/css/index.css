@@ -15,6 +15,23 @@ h3 {
     background-color: var(--secondary-color);
 }
 
+.container {
+   border: solid 5px var(--secondary-color);
+   width: 10%;
+   background-color: var(--main-color);
+   margin-left: 5px;
+   margin-bottom: 15px;
+}
+
+#fiat-control {
+   padding: 10px 10px 10px;
+   cursor: pointer;
+}
+
+.add {
+    margin-right: 55px;
+}
+
 
 .box {
     background-color: var(--main-color);
@@ -44,8 +61,6 @@ h3 {
     font-size: 15px;
 }
 
-
-
 .grid-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -62,6 +77,6 @@ h3 {
     font-size: 15px;
 }
 
-.edit .grid-container {
-    border-radius: 2px;
+.grid-container > button, .edit {
+    background-color: grey;
 }
