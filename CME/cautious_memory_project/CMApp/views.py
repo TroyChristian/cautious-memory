@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from . forms import EntryForm, CustomUserCreationForm
 from django.contrib import messages
 
