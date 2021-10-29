@@ -1,7 +1,9 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from . models import Entry
 
 #class UserRegisterForm(UserCreationForm):
 
@@ -42,3 +44,7 @@ class CustomUserCreationForm(forms.Form):
             self.cleaned_data['password1']
         )
         return user
+class EntryForm(ModelForm):
+    class Meta:
+        model = Entry
+        fields = ['entry_type', 'date', 'fiat_value', 'asset_value']
