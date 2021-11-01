@@ -19,6 +19,7 @@ from django.urls import path, include
 import CMApp.urls
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('', include(CMApp.urls)),
 ]

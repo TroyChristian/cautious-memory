@@ -44,6 +44,8 @@ class CustomUserCreationForm(forms.Form):
             self.cleaned_data['password1']
         )
         return user
+
+
 class EntryForm(ModelForm):
     class Meta:
         model = Entry
