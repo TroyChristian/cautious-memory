@@ -1,14 +1,21 @@
 from django.shortcuts import render, HttpResponse, redirect
 from . forms import EntryForm, CustomUserCreationForm
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 
 # Create your views here.
-def index(request):
-    new_entry_form = EntryForm()
-    context= {"entry_form":new_entry_form}
 
-    return render(request, "CMApp/index.html", context=context)
+
+def index(request):
+    if request.user.is_authenticated:
+        context = {}
+        context["user"] = request.user
+        return render(request, 'CMApp/dashboard.html', context)
+
+    else:
+        return render(request, 'CMApp/registration/login.html')
+
 
 def register(request):
     if request.method == 'POST':
