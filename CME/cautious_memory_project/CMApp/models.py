@@ -8,11 +8,11 @@ from django.db.models.signals import pre_save, post_save
 # Register your models here.
 
 class Portfolio(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="user_portfolio")
 
 
     def __str__(self):
-        return "%s's portfolio" % (self.owner.username)
+        return "%s's portfolio"  % (self.owner.username)
 
 class Asset(models.Model):
     owner_portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name="assets")
