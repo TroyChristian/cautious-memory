@@ -1,7 +1,7 @@
 {% extends 'CMApp/base.html' %}
 {% csrf_token %}
 
-{% block title %} hello hello {{ user.username }}  {% endblock %}
+{% block title %} hello  {{ user.username }}  {% endblock %}
 
 {% block nav %}
 <ul>
@@ -11,7 +11,17 @@
 {% endblock %}
 
 {% block content %}
+{% if assets %}
+<ul>
+ {% for asset in assets %}
 
-Your asset here
+  <li> <a href='{% url "NewEntry" asset.ticker %}'> {{ asset.ticker }} </a> <a href='{% url "DeleteAsset" asset.ticker %}'> Delete Asset </a> </li>
+
+  {% endfor %}
+  </ul>
+  {% else %}
+  No Assets Found
+
+  {% endif %}
 
 {% endblock %}

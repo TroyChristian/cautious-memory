@@ -49,7 +49,7 @@ class CustomUserCreationForm(forms.Form):
 class EntryForm(ModelForm):
     class Meta:
         model = Entry
-        fields = ['entry_type', 'date', 'fiat_value', 'asset_value']
+        fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
 
 class AssetForm(ModelForm):
 
