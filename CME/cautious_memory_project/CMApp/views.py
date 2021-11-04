@@ -10,12 +10,37 @@ from . models import Asset, Portfolio, Entry, Journal
 
 def index(request):
     if request.user.is_authenticated:
-        context = {"user":request.user}
+        # Fetch a users asset
+        user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
+        context = {"user":request.user,
+                    "assets":user_assets,
+
+                    }
 
         return render(request, 'CMApp/dashboard.html', context)
 
     else:
         return render(request, 'CMApp/registration/login.html')
+
+def new_entry(request, asset):
+    if request.method == "GET":
+        form = EntryForm()
+        user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
+        portfolio = user_portfolio_qs[0]
+        assets = Asset.objects.filter(owner_portfolio=portfolio)
+        current_asset_qs = assets.filter(ticker=asset)
+        current_asset = current_asset_qs[0]
+        print(current_asset)
+
+
+        #asset_journal_qs = Journal.objects.filter(tracked_asset = asset.journal)
+        form.fields["journal"].queryset = Journal.objects.filter(tracked_asset = current_asset.id)
+        return render(request, 'CMApp/new_entry.html', {"entry_form":form})
+
+
+
+    if request.method == "POST":
+        pass
 
 def add_asset(request):
     if request.method == "GET":
@@ -27,15 +52,12 @@ def add_asset(request):
 
     if request.method == "POST":
         form = AssetForm(request.POST)
-        form.owner_portfolio = request.user.username
-        #print(form.owner_portfolio.owner.id)
         if form.is_valid():
             form.save()
 
         context = {"user":request.user}
         return render(request, 'CMApp/dashboard.html', context)
-    #initial = {"owner_portfolio": request.user.user_portfolio}
-    #form = AssetForm(initial=initial)
+
 
 def register(request):
     if request.method == 'POST':
