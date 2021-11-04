@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 from . forms import EntryForm, CustomUserCreationForm, AssetForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from . models import Asset, Portfolio, Entry, Journal
 
 
@@ -40,7 +42,11 @@ def new_entry(request, asset):
 
 
     if request.method == "POST":
-        pass
+        form = EntryForm(request.POST)
+        if form.is_valid():
+            form.save()
+        context = {"user":request.user}
+        return HttpResponseRedirect(reverse('IndexView'))
 
 def add_asset(request):
     if request.method == "GET":
@@ -56,7 +62,23 @@ def add_asset(request):
             form.save()
 
         context = {"user":request.user}
-        return render(request, 'CMApp/dashboard.html', context)
+        return HttpResponseRedirect(reverse('IndexView'))
+
+
+def delete_asset(request, asset):
+    if request.method == "GET":
+        user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
+        portfolio = user_portfolio_qs[0]
+        assets = Asset.objects.filter(owner_portfolio=portfolio)
+        current_asset_qs = assets.filter(ticker=asset)
+        current_asset = current_asset_qs[0]
+        current_asset.delete_asset()
+        user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
+        return HttpResponseRedirect(reverse('IndexView'))
+
+
+
+
 
 
 def register(request):
