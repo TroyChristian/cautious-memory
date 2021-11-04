@@ -5,6 +5,13 @@
 
 <form method="POST">
   {% csrf_token %}
+  <h3> SnapShot </h3>
+  <table>
+    <tr> Fiat Amount: {{ asset.fiat }} </tr>
+    <tr> Asset Amount: {{ asset.asset }} </tr>
+    <tr> Price Average: {{ asset.price_avg }} </tr> 
+
+    </table>
    {{ entry_form }}
 
    <input type="submit" value="submit">
