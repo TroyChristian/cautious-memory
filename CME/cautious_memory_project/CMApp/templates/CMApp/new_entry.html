@@ -3,31 +3,40 @@
 
 
 {% block content %}
+<h3> SnapShot </h3>
 
-<form method="POST">
   {% csrf_token %}
-  <h3> SnapShot </h3>
+
   <table>
-    <tr> Fiat Amount: {{ asset.fiat }} </tr>
-    <tr> Asset Amount: {{ asset.asset }} </tr>
+    <tr>
+      <th> Fiat Amount </th>
+      <th> {{ asset.ticker }} Amount </th>
+      <th> Average Price of your {{ asset.ticker }} holdings  </th>
+    </tr>
+    <tr>
+    <td>{{ asset.fiat }}</td>
+    <td> {{ asset.asset }}</td>
+    <td>{{ asset.price_avg }}</td>
+    </tr>
+</table>
 
-
-
+<h3> New Entry <h3>
+<form method="POST">
    {{ entry_form }}
 
    <input type="submit" value="submit">
-   </table>
+
    </form>
 
 <form>
-   <h3> Journal </h3>
+   <h3>  {{ asset.ticker }} Journal </h3>
    <table>
    <tr>
      <th> Entry Type </th>
      <th> Date </th>
      <th> Fiat Amount <th>
      <th> Asset Amount <th>
-    
+
     </tr>
      {% for entry in entries %}
      <tr>
