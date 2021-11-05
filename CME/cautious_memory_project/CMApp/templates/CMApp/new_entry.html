@@ -1,4 +1,5 @@
 {% extends 'CMApp/base.html' %}
+{% load my_filters %}
 {% csrf_token %}
 
 
@@ -14,9 +15,9 @@
       <th> Average Price of your {{ asset.ticker }} holdings  </th>
     </tr>
     <tr>
-    <td>{{ asset.fiat }}</td>
+    <td>{{ asset.fiat | currency }}</td>
     <td> {{ asset.asset }}</td>
-    <td>{{ asset.price_avg }}</td>
+    <td>{{ asset.price_avg | currency }}</td>
     </tr>
 </table>
 
