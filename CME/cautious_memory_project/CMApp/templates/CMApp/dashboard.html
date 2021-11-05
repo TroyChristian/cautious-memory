@@ -3,13 +3,7 @@
 
 {% block title %} hello  {{ user.username }}  {% endblock %}
 
-{% block nav %}
-<ul>
-  <li> <a href="#">Logout </a></li>
-  <li> <a href="{% url 'IndexView' %}"> Dashboard </a> </li>
-  <li> <a href="{% url 'NewAsset' %}"> Add Asset </a> </li>
 
-{% endblock %}
 
 {% block content %}
 {% if assets %}
