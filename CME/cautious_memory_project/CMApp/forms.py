@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from . models import Entry, Asset, Portfolio
+from decimal import Decimal
 
 #class UserRegisterForm(UserCreationForm):
 
@@ -53,7 +54,8 @@ class EntryForm(ModelForm):
         fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
         widgets = {'journal': forms.HiddenInput()}
 
-    asset_value = forms.DecimalField()
+    fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
 
 
 
