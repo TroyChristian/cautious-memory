@@ -4,6 +4,7 @@ from decimal import Decimal
 import datetime
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
+from django.core.exceptions import ValidationError
 
 # Register your models here.
 
@@ -24,9 +25,11 @@ class Asset(models.Model):
     def snapshot(self):
 
         snapshot = self.journal.sum_entries()
-        (self.fiat, self.asset, self.price_avg) = snapshot #unpack tuple values into asset
-        self.save()
-        return
+        if snapshot:
+            (self.fiat, self.asset, self.price_avg) = snapshot #unpack tuple values into asset
+            self.save()
+            return
+        return # means there are no entries for this asset to sum, return
 
     def delete_asset(self):
         asset_qs = Asset.objects.get(id__exact=self.id)
@@ -46,6 +49,8 @@ class Journal(models.Model):
         asset = 0
         avg_price = 0
         entry_qs = Entry.objects.get_queryset().filter(journal=self)
+        if  not entry_qs:
+            return # returns None, means there are no entries
         for entry in entry_qs:
             fiat += entry.fiat_value
             asset += entry.asset_value
@@ -98,6 +103,11 @@ class Entry(models.Model):
 
     def __str__(self):
         return " Entry in %s" % (self.journal)
+
+    def clean(self):
+        if self.fiat_value == 0 or self.asset_value == 0:
+            raise ValidationError('Fiat and Asset values must be greater than zero')
+        return
 
 ###ENTRY MODEL SIGNALS###
 def make_debits_negative(sender, instance, **kwargs):

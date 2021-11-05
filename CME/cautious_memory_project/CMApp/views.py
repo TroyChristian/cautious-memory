@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from . models import Asset, Portfolio, Entry, Journal
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -26,17 +27,21 @@ def index(request):
 
 def new_entry(request, asset):
     if request.method == "GET":
-        form = EntryForm()
         user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
         portfolio = user_portfolio_qs[0]
         assets = Asset.objects.filter(owner_portfolio=portfolio)
         current_asset_qs = assets.filter(ticker=asset)
         current_asset = current_asset_qs[0]
-        print(current_asset)
+        current_asset.snapshot()
+        asset_journal_qs = Journal.objects.filter(tracked_asset = current_asset.id)
+        asset_journal = asset_journal_qs[0]
 
-
-        #asset_journal_qs = Journal.objects.filter(tracked_asset = asset.journal)
+        form = EntryForm(initial = {'journal':asset_journal})
         form.fields["journal"].queryset = Journal.objects.filter(tracked_asset = current_asset.id)
+
+
+
+
         return render(request, 'CMApp/new_entry.html', {"entry_form":form, "asset":current_asset})
 
 
@@ -45,21 +50,32 @@ def new_entry(request, asset):
         form = EntryForm(request.POST)
         if form.is_valid():
             form.save()
-        context = {"user":request.user}
-        return HttpResponseRedirect(reverse('IndexView'))
+            context = {"user":request.user}
+            return HttpResponseRedirect(reverse('IndexView'))
+        else:
+            messages.error(request, "Fiat and Asset Value must be greater than zero")
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset}))
+
 
 def add_asset(request):
     if request.method == "GET":
         # Show a forum where they can add an asset_value
-        form = AssetForm()
-        form.fields["owner_portfolio"].queryset = Portfolio.objects.filter(owner=request.user.id)
+        owner_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
+        owner_portfolio = owner_portfolio_qs[0]
+        form = AssetForm(initial={'owner_portfolio':owner_portfolio})
+
+
         context = {"asset_form":form}
         return render(request, 'CMApp/new_asset.html', context)
 
     if request.method == "POST":
         form = AssetForm(request.POST)
+
+
         if form.is_valid():
             form.save()
+
+
 
         context = {"user":request.user}
         return HttpResponseRedirect(reverse('IndexView'))

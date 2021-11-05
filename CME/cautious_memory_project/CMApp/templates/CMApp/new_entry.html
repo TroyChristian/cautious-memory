@@ -1,6 +1,7 @@
 {% extends 'CMApp/base.html' %}
 {% csrf_token %}
 
+
 {% block content %}
 
 <form method="POST">
@@ -9,7 +10,7 @@
   <table>
     <tr> Fiat Amount: {{ asset.fiat }} </tr>
     <tr> Asset Amount: {{ asset.asset }} </tr>
-    <tr> Price Average: {{ asset.price_avg }} </tr> 
+    <tr> Price Average: {{ asset.price_avg }} </tr>
 
     </table>
    {{ entry_form }}
