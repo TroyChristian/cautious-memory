@@ -53,7 +53,9 @@ class EntryForm(ModelForm):
         fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
         widgets = {'journal': forms.HiddenInput()}
 
-    
+    asset_value = forms.DecimalField()
+
+
 
 
 class AssetForm(ModelForm):
