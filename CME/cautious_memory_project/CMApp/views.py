@@ -39,10 +39,13 @@ def new_entry(request, asset):
         form = EntryForm(initial = {'journal':asset_journal})
         form.fields["journal"].queryset = Journal.objects.filter(tracked_asset = current_asset.id)
 
+        # make a query for entries using the asset_journal
+        entry_qs = Entry.objects.filter(journal=asset_journal)
+        entries = list(entry_qs)
 
 
 
-        return render(request, 'CMApp/new_entry.html', {"entry_form":form, "asset":current_asset})
+        return render(request, 'CMApp/new_entry.html', {"entry_form":form, "asset":current_asset, "entries":entries})
 
 
 
