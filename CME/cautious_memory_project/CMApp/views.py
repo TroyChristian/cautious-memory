@@ -60,6 +60,35 @@ def new_entry(request, asset):
             messages.error(request, "Fiat and Asset Value must be greater than zero")
             return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset}))
 
+def edit_entry(request, entry):
+    if request.method == "GET":
+        entry_qs = Entry.objects.filter(id=entry)
+        current_entry = entry_qs[0]
+
+        form = EntryForm(initial= {"entry_type": current_entry.entry_type, "date": current_entry.date, "fiat_value":current_entry.fiat_value, "asset_value": current_entry.asset_value, "journal": current_entry.journal})
+        context = {"edit_form":form}
+        return render(request, 'CMApp/edit_entry.html', context)
+
+    if request.method == "POST":
+        entry_qs = Entry.objects.filter(id=entry)
+        current_entry = entry_qs[0]
+        form = EntryForm(request.POST)
+        try:
+            form.is_valid()
+            fiat = form.cleaned_data['fiat_value']
+            asset = form.cleaned_data['asset_value']
+            type = form.cleaned_data['entry_type']
+            current_entry.update_entry(fiat=fiat, asset=asset, type=type)
+
+            return HttpResponseRedirect(reverse('IndexView'))
+        except Exception as error:
+            context = {"error":error}
+            return HttpResponseRedirect(request, 'CMApp/error.html', context)
+
+
+
+
+
 
 def add_asset(request):
     if request.method == "GET":
