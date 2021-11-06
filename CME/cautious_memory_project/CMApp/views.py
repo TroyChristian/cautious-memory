@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from . models import Asset, Portfolio, Entry, Journal
 from django.core.exceptions import ValidationError
+from django.contrib.auth import login, logout
 
 
 # Create your views here.
@@ -23,7 +24,7 @@ def index(request):
         return render(request, 'CMApp/dashboard.html', context)
 
     else:
-        return render(request, 'CMApp/registration/login.html')
+        return HttpResponseRedirect(reverse('login'))
 
 def new_entry(request, asset):
     if request.method == "GET":
