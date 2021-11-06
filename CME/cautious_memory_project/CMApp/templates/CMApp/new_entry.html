@@ -37,8 +37,8 @@
    <tr>
      <th> Entry Type </th>
      <th> Date </th>
-     <th> Fiat Amount <th>
-     <th> Asset Amount <th>
+     <th> Fiat Amount </th>
+     <th> Asset Amount </th>
 
     </tr>
      {% for entry in entries %}
@@ -47,6 +47,7 @@
     <td> {{ entry.date }} </td>
     <td> {{ entry.fiat_value }} </td>
     <td> {{ entry.asset_value }} </td>
+    <td> <a href="{% url 'EditEntry' entry.id %} "> edit entry </a>  </td>
     </tr>
     {% endfor %}
     </table>
