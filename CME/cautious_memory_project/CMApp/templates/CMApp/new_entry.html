@@ -1,0 +1,56 @@
+{% extends 'CMApp/base.html' %}
+{% load my_filters %}
+{% csrf_token %}
+
+
+{% block content %}
+<h3> SnapShot </h3>
+
+
+
+  <table>
+    <tr>
+      <th> Fiat Amount </th>
+      <th> {{ asset.ticker }} Amount </th>
+      <th> Average Price of your {{ asset.ticker }} holdings  </th>
+    </tr>
+    <tr>
+    <td>{{ asset.fiat | currency }}</td>
+    <td> {{ asset.asset }}</td>
+    <td>{{ asset.price_avg | currency }}</td>
+    </tr>
+</table>
+
+<h3> New Entry <h3>
+<form method="POST">
+  {% csrf_token %}
+   {{ entry_form }}
+
+   <input type="submit" value="submit">
+
+   </form>
+
+<form>
+  {% csrf_token %}
+   <h3>  {{ asset.ticker }} Journal </h3>
+   <table>
+   <tr>
+     <th> Entry Type </th>
+     <th> Date </th>
+     <th> Fiat Amount </th>
+     <th> Asset Amount </th>
+
+    </tr>
+     {% for entry in entries %}
+     <tr>
+    <td> {{ entry.entry_type }} </td>
+    <td> {{ entry.date }} </td>
+    <td> {{ entry.fiat_value }} </td>
+    <td> {{ entry.asset_value }} </td>
+    <td> <a href="{% url 'EditEntry' entry.id %} "> edit entry </a>  </td>
+    </tr>
+    {% endfor %}
+    </table>
+</form>
+
+{% endblock %}
