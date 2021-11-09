@@ -1,4 +1,5 @@
 {% extends 'CMApp/base.html' %}
+
 {% csrf_token %}
 
 {% block title %} hello  {{ user.username }}  {% endblock %}
@@ -10,7 +11,7 @@
 <ul>
  {% for asset in assets %}
 
-  <li> <a href='{% url "NewEntry" asset.ticker %}'> {{ asset.ticker }} </a> <a href='{% url "DeleteAsset" asset.ticker %}'> Delete Asset </a> </li>
+  <li> <a href='{% url "NewEntry" asset.ticker %}'> <img src = "{{ MEDIA_URL }}{{ asset.photo.url }}"/> </a> <a href='{% url "DeleteAsset" asset.ticker %}'> Delete Asset </a> </li>
 
   {% endfor %}
   </ul>
