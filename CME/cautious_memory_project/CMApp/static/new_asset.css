@@ -1,0 +1,18 @@
+.select {
+    margin: 4px 6px;
+    background-color: red;
+    width: 120px;
+}
+
+.body {
+    background-color: royalblue;
+}
+
+
+.asset-form {
+    border: 4px green solid;
+}
+
+#id_asset_value {
+    border: solid red 5px;
+}

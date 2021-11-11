@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.forms import widgets
+from django.forms.widgets import Select
 from . models import Entry, Asset, Portfolio
 from decimal import Decimal
 
@@ -11,10 +13,15 @@ from decimal import Decimal
 
 
 class CustomUserCreationForm(forms.Form):
-    username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     email = forms.EmailField(label='Enter email')
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+    
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input-control'}))
+
+    
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -52,10 +59,15 @@ class EntryForm(ModelForm):
     class Meta:
         model = Entry
         fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
-        widgets = {'journal': forms.HiddenInput()}
+        widgets = {'journal': forms.HiddenInput(), 
+                    'entry_type': forms.Select(attrs={'class': 'select'}),
+                    'date': forms.DateInput(attrs={'class': 'select'}),
+                    'fiat_value': forms.NumberInput(attrs={'class': 'select'}),
+                    'asset_value': forms.NumberInput(attrs={'class': 'select'}),
+         }
 
-    fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
-    asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    #fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    #asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
 
 
 

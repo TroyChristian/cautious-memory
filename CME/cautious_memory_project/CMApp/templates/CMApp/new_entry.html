@@ -1,9 +1,18 @@
 {% extends 'CMApp/base.html' %}
 {% load my_filters %}
 {% csrf_token %}
+{% load static %}
+
+  
 
 
 {% block content %}
+
+<head>
+  <link rel="stylesheet" href="{% static '/new_entry.css' %}">
+</head>
+
+<body class="main">
 <h3> SnapShot </h3>
 
 
@@ -52,5 +61,7 @@
     {% endfor %}
     </table>
 </form>
+
+</body>
 
 {% endblock %}
