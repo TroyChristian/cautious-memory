@@ -64,5 +64,5 @@ class AssetForm(ModelForm):
 
     class Meta:
         model = Asset
-        fields = ['ticker', 'owner_portfolio']
+        fields = ['ticker', 'owner_portfolio', 'photo']
         widgets = {'owner_portfolio': forms.HiddenInput()}
