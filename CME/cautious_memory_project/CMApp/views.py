@@ -7,6 +7,7 @@ from django.urls import reverse
 from . models import Asset, Portfolio, Entry, Journal
 from django.core.exceptions import ValidationError
 from django.contrib.auth import login, logout
+from PIL import Image
 
 
 # Create your views here.
@@ -102,11 +103,11 @@ def add_asset(request):
         return render(request, 'CMApp/new_asset.html', context)
 
     if request.method == "POST":
-        form = AssetForm(request.POST)
-
-
+        form = AssetForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+        else:
+            print("Form is not validating")
 
 
 
