@@ -1,13 +1,7 @@
 {% extends 'CMApp/base.html' %}
 {% csrf_token %}
 {% load static %}
-<body class="body">
-  
 
-<head>
-  <link rel="stylesheet" href="{% static '/new_asset.css' %}">
-</head>
-<h1 class='title'>Hello world!</h1>
 {% if messages %}
    <ul>
        {% for message in messages %}
@@ -20,6 +14,14 @@
 
 
 {% block content %}
+
+<body class="body">
+  
+
+  <head>
+    <link rel="stylesheet" href="{% static '/new_asset.css' %}">
+  </head>
+
 <form class="asset-form" method="POST">
   {% csrf_token %}
   {{ asset_form }}

@@ -59,15 +59,16 @@ class EntryForm(ModelForm):
     class Meta:
         model = Entry
         fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
+        fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
+        asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
         widgets = {'journal': forms.HiddenInput(), 
                     'entry_type': forms.Select(attrs={'class': 'select'}),
                     'date': forms.DateInput(attrs={'class': 'select'}),
                     'fiat_value': forms.NumberInput(attrs={'class': 'select'}),
-                    'asset_value': forms.NumberInput(attrs={'class': 'select'}),
+                    'asset_value': forms.NumberInput(attrs={'class': 'select'}),           
          }
 
-    #fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
-    #asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    
 
 
 

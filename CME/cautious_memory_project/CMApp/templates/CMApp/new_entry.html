@@ -13,22 +13,24 @@
 </head>
 
 <body class="main">
+  <div class="container">
 <h3> SnapShot </h3>
 
 
-
-  <table>
+    <section class="gird-container">
+  <table class="top-table">
     <tr>
-      <th> Fiat Amount </th>
-      <th> {{ asset.ticker }} Amount </th>
-      <th> Average Price of your {{ asset.ticker }} holdings  </th>
+      <th class="t-head"> Fiat Amount </th>
+      <th class="t-head"> {{ asset.ticker }} Amount </th>
+      <th class="t-head"> Average Price of your {{ asset.ticker }} holdings  </th>
     </tr>
     <tr>
-    <td>{{ asset.fiat | currency }}</td>
-    <td> {{ asset.asset }}</td>
-    <td>{{ asset.price_avg | currency }}</td>
+    <td class="t-data">{{ asset.fiat | currency }}</td>
+    <td class="t-data"> {{ asset.asset }}</td>
+    <td class="t-data">{{ asset.price_avg | currency }}</td>
     </tr>
 </table>
+    </section>
 
 <h3> New Entry <h3>
 <form method="POST">
@@ -39,29 +41,31 @@
 
    </form>
 
-<form>
+   <!---The 'j-data' class tag stands for journal data so to tell the 
+          diffrence from the top form table and bottom on the screen and 'j-head is the same'-->
+<form class="journal-form">
   {% csrf_token %}
    <h3>  {{ asset.ticker }} Journal </h3>
    <table>
    <tr>
-     <th> Entry Type </th>
-     <th> Date </th>
-     <th> Fiat Amount </th>
-     <th> Asset Amount </th>
+     <th class="t-head j-head"> Entry Type </th>
+     <th class="t-head j-head"> Date </th>
+     <th class="j-head"> Fiat Amount </th>
+     <th class="j-head"> Asset Amount </th>
 
     </tr>
      {% for entry in entries %}
      <tr>
-    <td> {{ entry.entry_type }} </td>
-    <td> {{ entry.date }} </td>
-    <td> {{ entry.fiat_value }} </td>
-    <td> {{ entry.asset_value }} </td>
+    <td class="t-data j-data"> {{ entry.entry_type }} </td>
+    <td class="t-data j-data"> {{ entry.date }} </td>
+    <td class="t-data j-data"> {{ entry.fiat_value }} </td>
+    <td class="t-data j-data"> {{ entry.asset_value }} </td>
     <td> <a href="{% url 'EditEntry' entry.id %} "> edit entry </a>  </td>
     </tr>
     {% endfor %}
     </table>
 </form>
-
+</div>
 </body>
 
 {% endblock %}
