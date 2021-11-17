@@ -23,7 +23,7 @@ class Asset(models.Model):
     fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
     asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00000000')) # A decimal places to represent a sat
     price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
-    photo = models.ImageField(default='small.png', upload_to='user_images')
+    photo = models.ImageField(default='small.png')
 
 
     def save(self, *args, **kwargs):
