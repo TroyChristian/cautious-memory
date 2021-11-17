@@ -55,7 +55,7 @@ class EntryForm(ModelForm):
         widgets = {'journal': forms.HiddenInput()}
 
     fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
-    asset_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    asset_value = forms.DecimalField(max_digits=12, decimal_places=8)
 
 
 
