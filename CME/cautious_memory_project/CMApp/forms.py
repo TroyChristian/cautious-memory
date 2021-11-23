@@ -66,3 +66,5 @@ class AssetForm(ModelForm):
         model = Asset
         fields = ['ticker', 'owner_portfolio', 'photo']
         widgets = {'owner_portfolio': forms.HiddenInput()}
+
+        #/home/nkisi/github/cautious-memory/CME/cautious_memory_project/media
