@@ -70,6 +70,12 @@ class EntryForm(ModelForm):
 
     
 
+        widgets = {'journal': forms.HiddenInput()}
+
+    fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
+    asset_value = forms.DecimalField(max_digits=12, decimal_places=8)
+
+
 
 
 
@@ -77,5 +83,8 @@ class AssetForm(ModelForm):
 
     class Meta:
         model = Asset
-        fields = ['ticker', 'owner_portfolio']
+        fields = ['ticker', 'owner_portfolio', 'photo']
         widgets = {'owner_portfolio': forms.HiddenInput()}
+
+
+# /Users/lambda_school_loaner_218/Desktop/CME/cautious-memory/CME/cautious_memory_project/CMApp/media/small.png

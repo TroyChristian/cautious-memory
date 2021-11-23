@@ -5,6 +5,8 @@ import datetime
 from django.dispatch import receiver
 from django.db.models.signals import pre_save, post_save
 from django.core.exceptions import ValidationError
+from PIL import Image
+from django.core.files.images import get_image_dimensions
 
 # Register your models here.
 
@@ -21,17 +23,19 @@ class Asset(models.Model):
     fiat = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) ##nine hundred ninety nine billion
     asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00')) # A decimal places to represent a sat
     price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
-    photo = models.ImageField(default='small.png', upload_to="media",
-        height_field="image_height",
-        width_field="image_width",
-        null=True,
-        blank=True,
-        editable=True,
-        help_text="Asset Image",
-        verbose_name="Asset Image"
-    )
-    image_height = models.PositiveIntegerField(null=True, blank=True, editable=False, default="100")
-    image_width = models.PositiveIntegerField(null=True, blank=True, editable=False, default="100")
+    photo = models.ImageField(default='small.png')
+
+
+    def save(self, *args, **kwargs):
+        super(Asset, self).save(*args, **kwargs)
+        SIZE = 100,100
+
+        if self.photo:
+            pic = Image.open(self.photo.path)
+            pic.thumbnail(SIZE, Image.LANCZOS)
+            pic.save(self.photo.path)
+
+
 
 
 
@@ -140,6 +144,9 @@ def make_debits_negative(sender, instance, **kwargs):
     return
 pre_save.connect(make_debits_negative, sender=Entry)
 
+
+
+
 def calculate_price_of_asset(sender, instance, **kwargs):
     price_of_asset = instance.fiat_value / instance.asset_value
     instance.price_of_asset = Decimal(price_of_asset)
@@ -173,3 +180,11 @@ def create_asset_journal(sender, instance, created, **kwargs):
         Journal.objects.create(tracked_asset=instance)
     return
 post_save.connect(create_asset_journal, sender=Asset)
+
+# def resize_image_asset_pre_save(sender, instance, **kwargs):
+#     asset_qs = Asset.objects.get(id__exact=instance.id)
+#     print(get_image_dimensions(instance.photo))
+#     asset_qs.resize_asset_image()
+#     print(get_image_dimensions(instance.photo))
+#     return
+# pre_save.connect(resize_image_asset_pre_save, sender=Asset)
