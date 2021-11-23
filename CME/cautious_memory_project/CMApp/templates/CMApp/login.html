@@ -1,6 +1,36 @@
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="{% static '/login.css' %}">
+</head>
+
+  <body>
+  
+
+    <div class="block">
+  
+      <div class="title-block">
+      <h1 class="title">Crypto Sheets</h1>
+    </div>
+
+      
+
+    <section class="form-div flex">
+
+    <div class="form-group">
+
+      <form class="login-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="login-btn" type="submit">Log In</button>
+
+      </form>
+    </div>
+  </section>  
+
+</div>
+
+  </body>
+</html>

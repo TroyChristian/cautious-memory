@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --background-color: #148a07;
+    --main-color: #fff;
+    --secondary-color: #d6cb00;
+}
+
+li, ul {
+    list-style-type: none;
+}
+
+.outter-container {
+    border: solid 3px var(--background-color);
+    background-color: var(--secondary-color);
+    margin-left: 25px;
+    margin-right: 25px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.coin-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.coin {
+   padding: 6px 5px;
+   border: solid var(--background-color) 3px;
+}

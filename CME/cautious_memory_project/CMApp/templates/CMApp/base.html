@@ -12,11 +12,13 @@
 {% endblock %}
 
 {% block nav %}
-<ul>
-  <li> <a href="{% url 'logout' %}">Logout </a></li>
-  <li> <a href="{% url 'IndexView' %}"> Dashboard </a> </li>
-  <li> <a href="{% url 'NewAsset' %}"> Add Asset </a> </li>
-
+<div class="nav-container">
+<ul class="nav-list">
+  <li class="list-link"> <a href="{% url 'logout' %}">Logout </a></li>
+  <li class="list-link"> <a href="{% url 'IndexView' %}"> Dashboard </a> </li>
+  <li class="list-link"> <a href="{% url 'NewAsset' %}"> Add Asset </a> </li>
+</ul>  
+</div>
 
 {% endblock %}
 

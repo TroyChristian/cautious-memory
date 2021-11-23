@@ -1,5 +1,6 @@
 {% extends 'CMApp/base.html' %}
 {% csrf_token %}
+{% load static %}
 
 {% if messages %}
    <ul>
@@ -13,11 +14,25 @@
 
 
 {% block content %}
+
+
+<body class="body">
+  
+
+  <head>
+    <link rel="stylesheet" href="{% static '/new_asset.css' %}">
+  </head>
+
+<form class="asset-form" method="POST">
+
 <form enctype="multipart/form-data" method="POST">
+
   {% csrf_token %}
   {{ asset_form }}
   <input type="submit" value="submit">
 
   </form>
+
+</body>
 
   {% endblock %}
