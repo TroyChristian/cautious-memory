@@ -33,7 +33,7 @@ class Asset(models.Model):
         if self.photo:
             pic = Image.open(self.photo.path)
             pic.thumbnail(SIZE, Image.LANCZOS)
-            pic.save(self.photo.path)
+            pic.save(self.photo.path, "PNG")
 
 
 
@@ -180,11 +180,3 @@ def create_asset_journal(sender, instance, created, **kwargs):
         Journal.objects.create(tracked_asset=instance)
     return
 post_save.connect(create_asset_journal, sender=Asset)
-
-# def resize_image_asset_pre_save(sender, instance, **kwargs):
-#     asset_qs = Asset.objects.get(id__exact=instance.id)
-#     print(get_image_dimensions(instance.photo))
-#     asset_qs.resize_asset_image()
-#     print(get_image_dimensions(instance.photo))
-#     return
-# pre_save.connect(resize_image_asset_pre_save, sender=Asset)

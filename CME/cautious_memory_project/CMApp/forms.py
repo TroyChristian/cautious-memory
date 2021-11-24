@@ -87,4 +87,3 @@ class AssetForm(ModelForm):
         widgets = {'owner_portfolio': forms.HiddenInput()}
 
 
-# /Users/lambda_school_loaner_218/Desktop/CME/cautious-memory/CME/cautious_memory_project/CMApp/media/small.png
