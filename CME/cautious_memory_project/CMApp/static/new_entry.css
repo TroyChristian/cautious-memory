@@ -55,7 +55,6 @@
 
 .t-data, td {
     text-align: end;
-    color: blue;
     border: solid var(--main-color) 3px;
     background-color: var(--background-color);
 }
