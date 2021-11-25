@@ -10,6 +10,7 @@ from django.contrib.auth import login, logout
 from PIL import Image
 
 
+
 # Create your views here.
 
 
@@ -27,12 +28,12 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse('login'))
 
-def new_entry(request, asset):
+def new_entry(request, asset, asset_id):
     if request.method == "GET":
         user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
         portfolio = user_portfolio_qs[0]
         assets = Asset.objects.filter(owner_portfolio=portfolio)
-        current_asset_qs = assets.filter(ticker=asset)
+        current_asset_qs = assets.filter(pk=asset_id)
         current_asset = current_asset_qs[0]
         current_asset.snapshot()
         asset_journal_qs = Journal.objects.filter(tracked_asset = current_asset.id)
@@ -115,12 +116,12 @@ def add_asset(request):
         return HttpResponseRedirect(reverse('IndexView'))
 
 
-def delete_asset(request, asset):
+def delete_asset(request, asset, asset_id):
     if request.method == "GET":
         user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
         portfolio = user_portfolio_qs[0]
         assets = Asset.objects.filter(owner_portfolio=portfolio)
-        current_asset_qs = assets.filter(ticker=asset)
+        current_asset_qs = assets.filter(pk=asset_id)
         current_asset = current_asset_qs[0]
         current_asset.delete_asset()
         user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
