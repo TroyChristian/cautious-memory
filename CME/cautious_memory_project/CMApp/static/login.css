@@ -21,14 +21,14 @@
 }
 
 
-
-
 .block {
     position: relative;
     background-color: var(--background-color);
     height: 75vh;
     overflow: auto;
     margin: 0 auto;
+    overflow: hidden;
+    
 }
 
 .block::before,

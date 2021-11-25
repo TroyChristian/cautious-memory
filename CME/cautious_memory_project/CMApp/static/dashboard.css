@@ -9,15 +9,44 @@
     --secondary-color: #d6cb00;
 }
 
+.background {
+    background-image: linear-gradient(to right, white, black);
+}
+
+.nav-container {
+    display: flex;
+    margin: 15px 15px;
+    border: solid var(--main-color) 3px;
+    background-color: rgba(255, 255, 255, 0.274);
+    border-radius: 10px;
+    padding: 25px 20px;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 6px;
+    list-style-type: none;
+}
+
+.list-link {
+    padding: 5px;
+    justify-content: start;
+}
+
+a:hover {
+    color: red;
+}
+
 li, ul {
     list-style-type: none;
 }
 
 .outter-container {
-    border: solid 3px var(--background-color);
-    background-color: var(--secondary-color);
-    margin-left: 25px;
-    margin-right: 25px;
+    border: solid 3px rgba(255, 255, 255, 0.39);
+    border-radius: 10px;
+    margin-left: 75px;
+    margin-right: 75px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -26,9 +55,16 @@ li, ul {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 8px 8px;
+    
 }
 
 .coin {
+   display: grid;
+   grid-template-rows: repeat(1 ,1fr);
    padding: 6px 5px;
-   border: solid var(--background-color) 3px;
+   justify-content: space-between;
+   
 }
+
+/*  comment for a commit to make a push to github*/
