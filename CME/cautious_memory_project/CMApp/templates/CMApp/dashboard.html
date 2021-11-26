@@ -16,7 +16,7 @@
 <ul class="coin-list">
  {% for asset in assets %}
 
-  <li class="coin"> <a href='{% url "NewEntry" asset.ticker asset.id %}'> <img src = "{{ MEDIA_URL }}{{ asset.photo.url }}"/> </a> <a href='{% url "DeleteAsset" asset.ticker asset.id %}'> Delete Asset </a> </li>
+  <li class="coin"> <a href='{% url "NewEntry" asset.ticker asset.id %}'> <img src = "{{ MEDIA_URL }}{{ asset.photo.url }}"/> </a> {{ asset.ticker }}<a href='{% url "DeleteAsset" asset.ticker asset.id %}'> Delete Asset </a> </li>
 
   {% endfor %}
   </ul>

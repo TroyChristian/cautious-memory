@@ -57,10 +57,11 @@ def new_entry(request, asset, asset_id):
         if form.is_valid():
             form.save()
             context = {"user":request.user}
-            return HttpResponseRedirect(reverse('IndexView'))
+            #return HttpResponseRedirect(reverse('IndexView'))
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
         else:
             messages.error(request, "Fiat and Asset Value must be greater than zero")
-            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset}))
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
 
 def edit_entry(request, entry):
     if request.method == "GET":
@@ -82,7 +83,12 @@ def edit_entry(request, entry):
             type = form.cleaned_data['entry_type']
             current_entry.update_entry(fiat=fiat, asset=asset, type=type)
 
-            return HttpResponseRedirect(reverse('IndexView'))
+            #return HttpResponseRedirect(reverse('IndexView'))
+            #return redirect(request.META.get("HTTP_REFERER"))
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':current_entry.journal.tracked_asset.ticker, 'asset_id':current_entry.journal.tracked_asset.id}))
+
+
+
         except Exception as error:
             context = {"error":error}
             return HttpResponseRedirect(request, 'CMApp/error.html', context)
