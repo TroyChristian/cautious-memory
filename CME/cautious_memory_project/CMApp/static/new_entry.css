@@ -10,13 +10,13 @@
 }
 
 .main {
-    background-color: var(--background-color);
+  background-image: linear-gradient(to right, white,black);
 }
 
 .nav-container {
     margin: 15px 15px;
     border: solid var(--main-color) 3px;
-    background-color: var(--secondary-color);
+    background-color: grey;
     border-radius: 10px;
 }
 
@@ -34,8 +34,8 @@
 }
 
 .container {
-    border: var(--main-color) solid 3px;
-    background-color: var(--secondary-color);
+    border: black solid 3px;
+    background-color: grey;
     justify-content: center;
     border-radius: 10px;
     margin: 20px 20px;
@@ -50,33 +50,39 @@
 
 .top-table {
    grid-template-rows: repeat(3, 3fr);
-   border: white solid 2.5px;
+   border: black solid 2.5px;
 }
 
 .t-data, td {
     text-align: end;
-    border: solid var(--main-color) 3px;
-    background-color: var(--background-color);
+    border: solid black 3px;
+    background-color: white;
 }
 
 .t-head, th {
     text-align: start;
-    border: solid var(--main-color) 3px;
-    background-color: var(--background-color);
+    border: solid black 3px;
+    background-color: white;
 }
 
 .journal-form {
     margin-top: 5px;
-    border: var(--main-color) solid 2.5px;
+    border: black solid 2.5px;
 }
 
 .j-data, .j-head {
-    border: white solid 3px;
+    border: black solid 3px;
 }
 
 a {
-    color: white;
+    color: black;
 }
+
+a:hover {
+    color: red;
+}
+
+/* trying to make changes happen*/
 
 
 
