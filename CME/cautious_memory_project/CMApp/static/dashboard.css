@@ -17,7 +17,7 @@
     display: flex;
     margin: 15px 15px;
     border: solid var(--main-color) 3px;
-    background-color: rgba(0, 0, 0, 0.274);
+    background-color: rgba(0, 0, 0, 1);
     border-radius: 10px;
     padding: 25px 20px;
 }
