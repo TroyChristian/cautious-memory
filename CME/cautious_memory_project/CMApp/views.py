@@ -54,19 +54,22 @@ def new_entry(request, asset, asset_id):
 
     if request.method == "POST":
         form = EntryForm(request.POST)
+
+
         if form.is_valid():
             form.save()
             context = {"user":request.user}
             #return HttpResponseRedirect(reverse('IndexView'))
             return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
-        else:
-            messages.error(request, "Fiat and Asset Value must be greater than zero")
-            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
+        messages.error(request, "Fiat and Asset Value must be greater than zero")
+        return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
+    
 
 def edit_entry(request, entry):
     if request.method == "GET":
         entry_qs = Entry.objects.filter(id=entry)
         current_entry = entry_qs[0]
+
 
         form = EntryForm(initial= {"entry_type": current_entry.entry_type, "date": current_entry.date, "fiat_value":current_entry.fiat_value, "asset_value": current_entry.asset_value, "journal": current_entry.journal})
         context = {"edit_form":form}
@@ -75,6 +78,7 @@ def edit_entry(request, entry):
     if request.method == "POST":
         entry_qs = Entry.objects.filter(id=entry)
         current_entry = entry_qs[0]
+
         form = EntryForm(request.POST)
         try:
             form.is_valid()
@@ -83,8 +87,7 @@ def edit_entry(request, entry):
             type = form.cleaned_data['entry_type']
             current_entry.update_entry(fiat=fiat, asset=asset, type=type)
 
-            #return HttpResponseRedirect(reverse('IndexView'))
-            #return redirect(request.META.get("HTTP_REFERER"))
+
             return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':current_entry.journal.tracked_asset.ticker, 'asset_id':current_entry.journal.tracked_asset.id}))
 
 
@@ -130,9 +133,17 @@ def delete_asset(request, asset, asset_id):
         current_asset_qs = assets.filter(pk=asset_id)
         current_asset = current_asset_qs[0]
         current_asset.delete_asset()
-        user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
+        #user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
         return HttpResponseRedirect(reverse('IndexView'))
 
+
+def delete_entry(request, entry):
+    entry_qs = Entry.objects.filter(id=entry)
+    current_entry = entry_qs[0]
+    asset = current_entry.journal.tracked_asset.ticker
+    asset_id = current_entry.journal.tracked_asset.id
+    current_entry.delete_entry()
+    return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
 
 
 
