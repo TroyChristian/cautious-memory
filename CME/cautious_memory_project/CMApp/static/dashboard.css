@@ -17,7 +17,7 @@
     display: flex;
     margin: 15px 15px;
     border: solid var(--main-color) 3px;
-    background-color: rgba(255, 255, 255, 0.274);
+    background-color: rgba(0, 0, 0, 0.274);
     border-radius: 10px;
     padding: 25px 20px;
 }
@@ -56,7 +56,7 @@ li, ul {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 8px 8px;
-    
+
 }
 
 .coin {
@@ -64,7 +64,7 @@ li, ul {
    grid-template-rows: repeat(1 ,1fr);
    padding: 6px 5px;
    justify-content: space-between;
-   
+
 }
 
 /*  comment for a commit to make a push to github*/
