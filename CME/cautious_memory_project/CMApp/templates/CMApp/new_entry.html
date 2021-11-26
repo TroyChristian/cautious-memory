@@ -3,7 +3,7 @@
 {% csrf_token %}
 {% load static %}
 
-  
+
 
 
 {% block content %}
@@ -41,7 +41,7 @@
 
    </form>
 
-   <!---The 'j-data' class tag stands for journal data so to tell the 
+   <!---The 'j-data' class tag stands for journal data so to tell the
           diffrence from the top form table and bottom on the screen and 'j-head is the same'-->
 <form class="journal-form">
   {% csrf_token %}
@@ -60,7 +60,7 @@
     <td class="t-data j-data"> {{ entry.date }} </td>
     <td class="t-data j-data"> {{ entry.fiat_value }} </td>
     <td class="t-data j-data"> {{ entry.asset_value }} </td>
-    <td> <a href="{% url 'EditEntry' entry.id %} "> edit entry </a>  </td>
+    <td> <a href="{% url 'DeleteEntry' entry.id %} "> delete entry </a>  </td>
     </tr>
     {% endfor %}
     </table>

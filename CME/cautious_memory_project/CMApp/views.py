@@ -10,6 +10,7 @@ from django.contrib.auth import login, logout
 from PIL import Image
 
 
+
 # Create your views here.
 
 
@@ -27,12 +28,12 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse('login'))
 
-def new_entry(request, asset):
+def new_entry(request, asset, asset_id):
     if request.method == "GET":
         user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
         portfolio = user_portfolio_qs[0]
         assets = Asset.objects.filter(owner_portfolio=portfolio)
-        current_asset_qs = assets.filter(ticker=asset)
+        current_asset_qs = assets.filter(pk=asset_id)
         current_asset = current_asset_qs[0]
         current_asset.snapshot()
         asset_journal_qs = Journal.objects.filter(tracked_asset = current_asset.id)
@@ -53,18 +54,22 @@ def new_entry(request, asset):
 
     if request.method == "POST":
         form = EntryForm(request.POST)
+
+
         if form.is_valid():
             form.save()
             context = {"user":request.user}
-            return HttpResponseRedirect(reverse('IndexView'))
-        else:
-            messages.error(request, "Fiat and Asset Value must be greater than zero")
-            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset}))
+            #return HttpResponseRedirect(reverse('IndexView'))
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
+        messages.error(request, "Fiat and Asset Value must be greater than zero")
+        return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
+    
 
 def edit_entry(request, entry):
     if request.method == "GET":
         entry_qs = Entry.objects.filter(id=entry)
         current_entry = entry_qs[0]
+
 
         form = EntryForm(initial= {"entry_type": current_entry.entry_type, "date": current_entry.date, "fiat_value":current_entry.fiat_value, "asset_value": current_entry.asset_value, "journal": current_entry.journal})
         context = {"edit_form":form}
@@ -73,6 +78,7 @@ def edit_entry(request, entry):
     if request.method == "POST":
         entry_qs = Entry.objects.filter(id=entry)
         current_entry = entry_qs[0]
+
         form = EntryForm(request.POST)
         try:
             form.is_valid()
@@ -81,7 +87,11 @@ def edit_entry(request, entry):
             type = form.cleaned_data['entry_type']
             current_entry.update_entry(fiat=fiat, asset=asset, type=type)
 
-            return HttpResponseRedirect(reverse('IndexView'))
+
+            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':current_entry.journal.tracked_asset.ticker, 'asset_id':current_entry.journal.tracked_asset.id}))
+
+
+
         except Exception as error:
             context = {"error":error}
             return HttpResponseRedirect(request, 'CMApp/error.html', context)
@@ -115,17 +125,25 @@ def add_asset(request):
         return HttpResponseRedirect(reverse('IndexView'))
 
 
-def delete_asset(request, asset):
+def delete_asset(request, asset, asset_id):
     if request.method == "GET":
         user_portfolio_qs = Portfolio.objects.filter(owner=request.user.id)
         portfolio = user_portfolio_qs[0]
         assets = Asset.objects.filter(owner_portfolio=portfolio)
-        current_asset_qs = assets.filter(ticker=asset)
+        current_asset_qs = assets.filter(pk=asset_id)
         current_asset = current_asset_qs[0]
         current_asset.delete_asset()
-        user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
+        #user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
         return HttpResponseRedirect(reverse('IndexView'))
 
+
+def delete_entry(request, entry):
+    entry_qs = Entry.objects.filter(id=entry)
+    current_entry = entry_qs[0]
+    asset = current_entry.journal.tracked_asset.ticker
+    asset_id = current_entry.journal.tracked_asset.id
+    current_entry.delete_entry()
+    return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
 
 
 

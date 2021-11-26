@@ -6,9 +6,10 @@ urlpatterns = [
 path('', views.index, name="IndexView"),
 path('register', views.register, name='register'),
 path('add_asset', views.add_asset, name='NewAsset'),
-path('new_asset/<str:asset>', views.new_entry, name="NewEntry"),
-path('delete_asset/<str:asset>', views.delete_asset, name="DeleteAsset"),
+path('new_entry/<str:asset>/<int:asset_id>', views.new_entry, name="NewEntry"),
+path('delete_asset/<str:asset>/<int:asset_id>', views.delete_asset, name="DeleteAsset"),
 path('edit_entry/<str:entry>', views.edit_entry, name="EditEntry"),
+path('delete_entry/<str:entry>', views.delete_entry, name="DeleteEntry"),
 
 
 ]
