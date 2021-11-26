@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 import datetime
 from django.dispatch import receiver
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.core.exceptions import ValidationError
 from PIL import Image
 from django.core.files.images import get_image_dimensions
@@ -65,15 +65,26 @@ class Journal(models.Model):
         fiat = 0
         asset = 0
         avg_price = 0
-        entry_qs = Entry.objects.get_queryset().filter(journal=self)
+        entry_qs = Entry.objects.get_queryset().filter(journal=self).order_by('-entry_type')
         if  not entry_qs:
-            return # returns None, means there are no entries
+            return (0,0,0)
         for entry in entry_qs:
             fiat += entry.fiat_value
             asset += entry.asset_value
 
-        avg_price = fiat / asset
-        return (fiat, asset, avg_price)
+        try:
+            avg_price = fiat / asset
+            return (fiat, asset, avg_price)
+        except ZeroDivisionError:
+            return (0,0,0)
+        except:
+            return (0,0,0)
+        finally:
+            if fiat < 0:
+                return (0,0,0)
+            if asset < 0:
+                return (0,0,0)
+
 
 
 
@@ -114,6 +125,15 @@ class Entry(models.Model):
             asset.snapshot() #create the snapshot after the edited entry is saved
             return
 
+    def delete_entry(self):
+        entry = Entry.objects.get(id__exact=self.id)
+        entry.delete()
+        journal = self.journal
+        asset = journal.tracked_asset
+        asset.snapshot()
+        return
+
+
 
 
 
@@ -122,9 +142,19 @@ class Entry(models.Model):
         return " Entry in %s" % (self.journal)
 
     def clean(self):
+        journal = self.journal
+        asset = journal.tracked_asset
         if self.fiat_value == 0 or self.asset_value == 0:
             raise ValidationError('Fiat and Asset values must be greater than zero')
+        
+        if self.entry_type == 'debit':
+            if self.fiat_value > asset.fiat or self.asset_value > asset.asset:
+                raise ValidationError("You cannot debit more than your total fiat or asset values.")
+                print("TRIGGERED")
+        else:
+            print("SKIPPED")
         return
+
 
 ###ENTRY MODEL SIGNALS###
 def make_debits_negative(sender, instance, **kwargs):
@@ -159,6 +189,14 @@ def calculate_snapshot_upon_new_entry(sender, instance, created, **kwargs):
     instance_tracked_asset.snapshot()
     return
 post_save.connect(calculate_snapshot_upon_new_entry, sender=Entry)
+
+# def calculate_snapshot_upon_entry_deletion(sender, instance, **kwargs):
+#     instance_journal = instance.journal
+#     instance_tracked_asset = instance_journal.tracked_asset
+#     instance_tracked_asset.snapshot()
+#     return
+# post_delete.connect(calculate_snapshot_upon_entry_deletion, sender=Entry)
+
 
 
 
