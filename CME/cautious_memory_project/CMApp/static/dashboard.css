@@ -3,11 +3,7 @@
     padding: 0;
 }
 
-:root {
-    --background-color: #148a07;
-    --main-color: #fff;
-    --secondary-color: #d6cb00;
-}
+
 
 .background {
     background-image: linear-gradient(to right, white, black);

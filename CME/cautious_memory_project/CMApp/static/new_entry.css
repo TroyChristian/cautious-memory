@@ -1,8 +1,4 @@
-:root {
-    --background-color: #148a07;
-    --main-color: #fff;
-    --secondary-color: #d6cb00;
-}
+
 
 * {
     margin: 0;
@@ -15,7 +11,7 @@
 
 .nav-container {
     margin: 15px 15px;
-    border: solid var(--main-color) 3px;
+    border: solid white 3px;
     background-color: grey;
     border-radius: 10px;
 }
