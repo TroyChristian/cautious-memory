@@ -1,14 +1,14 @@
 .body {
-    background-image: linear-gradient(to right, white, black);
+    background-color: rgb(0, 174, 255);
 }
 
 .nav-container {
     display: flex;
     margin: 15px 15px;
-    border: solid black 3px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
     padding: 15px 20px;
+    box-shadow: white 3px 3px;
 }
 
 ul {
@@ -30,9 +30,10 @@ ul {
 }
 
 .asset-form-div {
-    border: solid black 3px;
     border-radius: 10px;
     margin: auto 160px;
-    background-color: grey;
-    padding: 5px;
+    background-color: white;
+    box-shadow: black 3px 3px;
+    display: flex;
+    justify-content: start;
 }
