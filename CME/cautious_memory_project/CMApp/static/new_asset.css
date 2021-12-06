@@ -1,3 +1,38 @@
 .body {
+    background-image: linear-gradient(to right, white, black);
+}
+
+.nav-container {
+    display: flex;
+    margin: 15px 15px;
+    border: solid black 3px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 15px 20px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.nav-list {
+   display: flex;
+   justify-content: start;
     
+}
+
+.list-link {
+    padding: 0px 5px 0px 0px;
+}
+
+.asset-form {
+    padding: 5px;
+}
+
+.asset-form-div {
+    border: solid black 3px;
+    border-radius: 10px;
+    margin: auto 160px;
+    background-color: grey;
+    padding: 5px;
 }

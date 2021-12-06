@@ -9,6 +9,9 @@
 
 
 {% block content %}
+<body class="background">
+  
+
 <link rel="stylesheet" href="{%static 'dashboard.css'%}">
 
 {% if assets %}
@@ -21,6 +24,7 @@
   {% endfor %}
   </ul>
 </div>
+</body>
   {% else %}
   No Assets Found
 

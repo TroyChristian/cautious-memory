@@ -6,16 +6,20 @@
 
 
 .background {
-    background-image: linear-gradient(to right, white, black);
+    background-color: rgb(0, 174, 255);
 }
 
 .nav-container {
     display: flex;
-    margin: 15px 15px;
-    border: solid grey 3px;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: white;
     border-radius: 10px;
-    padding: 25px 20px;
+    padding: 10px 15px;
+    margin-top: 35px;
+    margin-right: 950px;
+    margin-left: 75px;
+    margin-bottom: 45px;
+    box-shadow: black 3px 3px;
+
 }
 
 .nav-list {
@@ -39,12 +43,14 @@ li, ul {
 }
 
 .outter-container {
-    border: solid 3px rgba(0, 0, 0, 0.39);
+    border: solid 3px rgba(255, 255, 255, 0.39);
     border-radius: 10px;
     margin-left: 75px;
     margin-right: 75px;
     display: flex;
     flex-wrap: wrap;
+    background-color: white;
+    box-shadow: black 3px 3px;
 }
 
 .coin-list {
@@ -52,7 +58,6 @@ li, ul {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 8px 8px;
-
 }
 
 .coin {
@@ -60,7 +65,11 @@ li, ul {
    grid-template-rows: repeat(1 ,1fr);
    padding: 6px 5px;
    justify-content: space-between;
-
+   border: solid rgb(0, 174, 255) 2.5px;
+   margin-left: 4px;
+   margin-right: 4px;
+   margin-top: 4px;
+   margin-bottom: 4px; 
 }
 
 /*  comment for a commit to make a push to github*/
