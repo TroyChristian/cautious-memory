@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    font-family: 'Heebo', sans-serif;
 }
 
 :root {
@@ -15,23 +16,22 @@
 }
 
 h1 {
-    font-family: 'Ubuntu', 'sans-serif';
+    font-family: 'Heebo', sans-serif;
 }
 
 .title-block {
-    background-image: linear-gradient(to right, white, #d6cb00, #148a07);
-    border-bottom: solid var(--background-color) 10px;
+    background-color: rgb(0, 174, 255);
+    border-bottom: solid white 10px;
 }
 
 
 .block {
     position: relative;
-    background-color: var(--background-color);
+    background-color: rgb(0, 174, 255);
     height: 75vh;
     overflow: auto;
     margin: 0 auto;
     overflow: hidden;
-    
 }
 
 .block::before,
@@ -59,8 +59,8 @@ h1 {
 
 
 label {
-    color: var(--background-color);
-    font-family: 'Ubuntu', 'sans-serif';
+    color: rgb(0, 174, 255);
+    font-family: 'Heebo', sans-serif;
     margin: 10px;
 }
 
@@ -70,29 +70,34 @@ label {
     display: flex;
     justify-items: flex-start;
     flex-direction: column;
-    
 }
 
 #id_username  {
     border: none;
-    border-bottom: solid var(--secondary-color) 2px;
+    border-bottom: solid rgb(0, 174, 255) 2px;
+    margin: 5px 5px;
+    position: relative;
+    right: 15px;
 }
 
 #id_password {
     border: none;
-    border-bottom: solid var(--secondary-color) 2px;
+    border-bottom: solid rgb(0, 174, 255) 2px;
+    margin: 5px 0px;
+    position: relative;
+    right: 10px;
 }
 
 
 .login-btn {
-    margin-top: 5px;
-    background-color: var(--secondary-color);
+    margin-top: 20px;
+    background-color: rgb(0, 174, 255);
     border:none;
     padding: 5px 9px;
-    color: var(--background-color);
+    color: white;
     transition-duration: 0.4s;
     border-radius: 4px;
-    font-family: 'Ubuntu', 'sans-serif';
+    font-family: 'Heebo', sans-serif;
 }
 
 .login-btn:hover {
