@@ -1,12 +1,10 @@
-
-
 * {
     margin: 0;
     padding: 0;
 }
 
 .main {
-  background-image: linear-gradient(to right, white,black);
+  background-color: rgb(0, 174, 255);
 }
 
 .nav-container {
@@ -30,12 +28,12 @@
 }
 
 .container {
-    border: black solid 3px;
-    background-color: grey;
     justify-content: center;
     border-radius: 10px;
     margin: 20px 20px;
     padding: 30px 30px;
+    background-color: white;
+    box-shadow: white 3px 3px;
 }
 
 

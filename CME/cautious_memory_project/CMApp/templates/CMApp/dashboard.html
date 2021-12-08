@@ -11,8 +11,13 @@
 {% block content %}
 <body class="background">
   
+<head>
+  <link rel="stylesheet" href="{%static 'dashboard.css'%}">
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300&family=Ubuntu:wght@300&display=swap" rel="stylesheet"> 
+</head>
 
-<link rel="stylesheet" href="{%static 'dashboard.css'%}">
 
 {% if assets %}
 <div class="outter-container">
