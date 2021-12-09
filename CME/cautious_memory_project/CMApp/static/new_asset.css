@@ -5,8 +5,7 @@
 .nav-container {
     display: flex;
     position: relative;
-    right: 365px;
-    top: 60px;
+    left: -455px;
     margin-left: 450px;
     margin-right: 450px;
     background-color: rgba(255, 255, 255, 0.5);
@@ -76,6 +75,7 @@ ul {
     color: white;
     position: relative;
     bottom: 420px;
+    left: 420px;
 }
 
 a:hover {

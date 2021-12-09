@@ -1,7 +1,7 @@
 {% extends 'CMApp/base.html' %}
 
 {% block content %}
-<h3> Edit Entry <h3>
+<h3 class="header"> Edit Entry <h3>
 <form method="POST">
   {% csrf_token %}
    {{ edit_form }}
