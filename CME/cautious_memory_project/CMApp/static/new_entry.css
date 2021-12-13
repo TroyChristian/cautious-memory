@@ -1,23 +1,20 @@
-:root {
-    --background-color: #148a07;
-    --main-color: #fff;
-    --secondary-color: #d6cb00;
-}
-
 * {
     margin: 0;
     padding: 0;
 }
 
 .main {
-  background-image: linear-gradient(to right, white,black);
+  background-color: rgb(0, 174, 255);
 }
 
 .nav-container {
     margin: 15px 15px;
-    border: solid var(--main-color) 3px;
-    background-color: grey;
+    border: solid white 3px;
     border-radius: 10px;
+    background-color: white;
+    box-shadow: black 3px 3px;
+    margin-right: 950px;
+    color: blue;
 }
 
 .nav-list {
@@ -30,16 +27,23 @@
 
 .list-link {
     padding: 5px;
-    
+
 }
 
 .container {
-    border: black solid 3px;
-    background-color: grey;
     justify-content: center;
     border-radius: 10px;
     margin: 20px 20px;
     padding: 30px 30px;
+    background-color: white;
+    box-shadow: white 3px 3px;
+}
+
+.header {
+    position: relative;
+    top: 130px;
+    margin-bottom: 120px;
+    color: blue;
 }
 
 
@@ -72,18 +76,15 @@
 
 .j-data, .j-head {
     border: black solid 3px;
+
 }
 
-a {
-    color: black;
+.j-data {
+    margin-left: 5px;
+    margin-right: 5px;
 }
+
 
 a:hover {
     color: red;
 }
-
-
-
-
-
-

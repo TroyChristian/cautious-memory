@@ -1,6 +1,6 @@
 {% extends 'CMApp/base.html' %}
 
-{% csrf_token %}
+
 
 {% block title %} hello  {{ user.username }} {%load static%}
 
@@ -9,7 +9,15 @@
 
 
 {% block content %}
-<link rel="stylesheet" href="{%static 'dashboard.css'%}">
+<body class="background">
+  
+<head>
+  <link rel="stylesheet" href="{%static 'dashboard.css'%}">
+  <link rel="preconnect" href="https://fonts.googleapis.com"> 
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300&family=Ubuntu:wght@300&display=swap" rel="stylesheet"> 
+</head>
+
 
 {% if assets %}
 <div class="outter-container">
@@ -21,6 +29,7 @@
   {% endfor %}
   </ul>
 </div>
+</body>
   {% else %}
   No Assets Found
 
