@@ -31,16 +31,16 @@
     </tr>
 </table>
     </section>
-
+<div class="move-up">
 <h3> New Entry </h3>
-<form method="POST">
+<form class="entry-form" method="POST">
   {% csrf_token %}
    {{ entry_form }}
 
    <input type="submit" value="submit">
 
    </form>
-
+  </div>
    <!---The 'j-data' class tag stands for journal data so to tell the
           diffrence from the top form table and bottom on the screen and 'j-head is the same'-->
 <form class="journal-form">
@@ -53,6 +53,7 @@
      <th class="j-head"> Fiat Amount </th>
      <th class="j-head"> Asset Amount </th>
 
+     
     </tr>
      {% for entry in entries %}
      <tr>
@@ -64,8 +65,8 @@
     </tr>
     {% endfor %}
     </table>
+   </div>
 </form>
-</div>
 </body>
 
 {% endblock %}

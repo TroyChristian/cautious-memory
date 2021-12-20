@@ -1,6 +1,8 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-size: 100%;
 }
 
 .main {
@@ -36,7 +38,7 @@
     margin: 20px 20px;
     padding: 30px 30px;
     background-color: white;
-    box-shadow: white 3px 3px;
+    overflow-y: scroll;
 }
 
 .header {
@@ -50,6 +52,7 @@
 .gird-container {
     display: grid;
     grid-template-rows: repeat(3,1fr);
+    margin-right: 620px;
 }
 
 .top-table {
@@ -57,32 +60,56 @@
    border: black solid 2.5px;
 }
 
+.move-up {
+    position: relative;
+    top: -45px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.entry-form {
+    position: relative;
+    border: black solid 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: space-evenly;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 20px 5px;
+}
+
 .t-data, td {
-    text-align: end;
+    text-align: center;
     border: solid black 3px;
     background-color: white;
 }
 
 .t-head, th {
-    text-align: start;
+    text-align: center;
     border: solid black 3px;
     background-color: white;
 }
 
 .journal-form {
-    margin-top: 5px;
+    margin-top: 20px;
     border: black solid 2.5px;
 }
 
+
+
 .j-data, .j-head {
     border: black solid 3px;
-
+    margin: 0 15px 0 15px;
 }
 
-.j-data {
-    margin-left: 5px;
-    margin-right: 5px;
+.scroll {
+    overflow-y: scroll;
 }
+
 
 
 a:hover {
