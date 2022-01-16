@@ -15,13 +15,3 @@ class PortfolioAdmin(admin.ModelAdmin):
 @admin.register(myModels.Asset)
 class AssetAdmin(admin.ModelAdmin):
     list_display = ("owner_portfolio", "ticker")
-
-
-@admin.register(myModels.Journal)
-class JournalAdmin(admin.ModelAdmin):
-    list_display = ("tracked_asset",)
-
-
-@admin.register(myModels.Entry)
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ("journal", "entry_type", "fiat_value", "asset_value", "date" )

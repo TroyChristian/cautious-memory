@@ -25,9 +25,9 @@
       <th class="t-head"> Average Price of your {{ asset.ticker }} holdings  </th>
     </tr>
     <tr>
-    <td class="t-data">{{ asset.fiat | currency }}</td>
-    <td class="t-data"> {{ asset.asset }}</td>
-    <td class="t-data">{{ asset.price_avg | currency }}</td>
+    <td class="t-data">{{ asset.FCI | currency }}</td>
+    <td class="t-data"> {{ asset.CAH }}</td>
+    <td class="t-data">{{ asset.CAP | currency }}</td>
     </tr>
 </table>
     </section>
@@ -56,11 +56,11 @@
     </tr>
      {% for entry in entries %}
      <tr>
-    <td class="t-data j-data"> {{ entry.entry_type }} </td>
-    <td class="t-data j-data"> {{ entry.date }} </td>
-    <td class="t-data j-data"> {{ entry.fiat_value }} </td>
-    <td class="t-data j-data"> {{ entry.asset_value }} </td>
-    <td> <a href="{% url 'DeleteEntry' entry.id %} "> delete entry </a>  </td>
+    <td class="t-data j-data"> {{ entry.tx_type }} </td>
+    <td class="t-data j-data"> {{ entry.date_created }} </td>
+    <td class="t-data j-data"> {{ entry.fiat_amount}} </td>
+    <td class="t-data j-data"> {{ entry.asset_amount }} </td>
+    <td> <a href="{% url 'DeleteEntry' entry.tx_asset.ticker entry.id %} "> delete entry </a>  </td>
     </tr>
     {% endfor %}
     </table>
