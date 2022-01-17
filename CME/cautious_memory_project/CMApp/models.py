@@ -29,36 +29,49 @@ class Asset(models.Model):
     CAP = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Current Average price
     APL = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Asset Profit/Loss
 
-    def create_tx(self, type, fiat_arg, asset_arg):
+    def create_tx(self, type, asset_arg, fiat_arg):
+        asset_arg = Decimal(asset_arg)
+        fiat_arg = Decimal(fiat_arg)
         if type == "Buy":
             self.FATT += fiat_arg
             self.FCI += fiat_arg
             self.AHAT += asset_arg
             self.CAH += asset_arg
-            self.save()
-            return Transaction(type, fiat_arg, asset_arg)
+
+
 
         if type == "Sell":
             profit_loss = fiat_arg - (asset_arg * self.CAP)
-            self.FCI -= (asset_arg * asset.CAP)
+            self.FCI -= (asset_arg * self.CAP)
             self.CAH -= asset_arg
             self.FG += fiat_arg
             self.ASAT += asset_arg
             self.APL += profit_loss
-            self.save()
-            return Transaction(type, fiat_arg, asset_arg)
+
 
         if type == "Spend":
             self.CAH -= asset_arg
-            self.save()
-            return Transaction(type, fiat_arg, asset_arg)
+
 
         if type == "Acquire":
             self.CAH += asset_arg
-            self.save()
-            return Transaction(type, fiat_arg, asset_arg)
+
+        self.update_CPA()
 
 
+        return  Transaction(type, fiat_arg, asset_arg)
+
+
+
+
+
+
+    def update_CPA(self):
+        try:
+            self.CAP = self.FCI / self.CAH
+        except:
+            self.CAP = 0
+        return
 
 
 

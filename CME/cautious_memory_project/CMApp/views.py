@@ -86,18 +86,24 @@ def new_tx(request, asset, asset_id):
 
 
         if form.is_valid():
+
+            portfolio = Portfolio.objects.filter(owner=request.user.id).get()
+            assets = Asset.objects.filter(owner_portfolio=portfolio)
+            current_asset = assets.filter(pk=asset_id).get()
+            current_asset.create_tx(form.data['type'], form.data['asset_amount'], form.data['fiat_amount'])
             form.save()
-            context = {"user":request.user}
+            current_asset.save()
 
-            return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
 
-        return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
-
+    return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
 
 
 
 
-        return render(request, 'CMApp/new_entry.html', {"entry_form":form, "asset":current_asset,})
+
+
+
+
 def delete_entry(request, asset, tx_id):
     current_entry = Transaction.objects.filter(id=tx_id).get()
     asset = current_entry.tx_asset.ticker
