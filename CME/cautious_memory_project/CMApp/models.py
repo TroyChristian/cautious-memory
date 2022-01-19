@@ -22,7 +22,7 @@ class Asset(models.Model):
     photo = models.ImageField(default='small.png')
     AHAT = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00')) #Asset Held All Time
     ASAT = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00')) # Asset sold all Time
-    FATT = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Fiat Total All Time
+    FATT = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Fiat Total Invested All Time
     FG = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Fiat gained through Sales
     FCI = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Fiat Current Invested
     CAH = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00')) # Current Asset Held
@@ -32,6 +32,7 @@ class Asset(models.Model):
     def create_tx(self, type, asset_arg, fiat_arg):
         asset_arg = Decimal(asset_arg)
         fiat_arg = Decimal(fiat_arg)
+        tx_asset = self.id
         if type == "Buy":
             self.FATT += fiat_arg
             self.FCI += fiat_arg
@@ -41,6 +42,9 @@ class Asset(models.Model):
 
 
         if type == "Sell":
+            if asset_arg > self.CAH:
+                return
+
             profit_loss = fiat_arg - (asset_arg * self.CAP)
             self.FCI -= (asset_arg * self.CAP)
             self.CAH -= asset_arg
@@ -58,14 +62,16 @@ class Asset(models.Model):
 
         self.update_CPA()
 
-
-        return  Transaction(type, fiat_arg, asset_arg)
-
+        #created_tx = Transaction(tx_asset, type, fiat_arg, asset_arg)
 
 
+        #return  created_tx
 
 
 
+
+
+        #update current price average (cost basis)
     def update_CPA(self):
         try:
             self.CAP = self.FCI / self.CAH
@@ -103,13 +109,13 @@ def create_user_portfolio(sender, instance, created, **kwargs):
 post_save.connect(create_user_portfolio, sender=User)
 
 ###Asset Model Signals###
-def adjust_CAP(sender, instance, **kwargs):
-    try:
-        instance.CAP = instance.CAH / instance.FCI
-    except ZeroDivisionError:
-        instance.CAP = 0
-        return
-    finally:
-        return
-
-post_save.connect(adjust_CAP, sender=Asset)
+# def adjust_CAP(sender, instance, **kwargs):
+#     try:
+#         instance.CAP = instance.CAH / instance.FCI
+#     except ZeroDivisionError:
+#         instance.CAP = 0
+#         return
+#     finally:
+#         return
+#
+# post_save.connect(adjust_CAP, sender=Asset)

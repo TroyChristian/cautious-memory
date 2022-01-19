@@ -23,12 +23,34 @@
       <th class="t-head"> Fiat Amount </th>
       <th class="t-head"> {{ asset.ticker }} Amount </th>
       <th class="t-head"> Average Price of your {{ asset.ticker }} holdings  </th>
+      <th class="t-head"> Your Profit/Loss {{asset.ticker }} </th>
+
     </tr>
     <tr>
     <td class="t-data">{{ asset.FCI | currency }}</td>
     <td class="t-data"> {{ asset.CAH }}</td>
     <td class="t-data">{{ asset.CAP | currency }}</td>
+    <td class="t-data">{{ asset.APL | currency }}</td>
     </tr>
+
+
+
+
+</table>
+<table class="top-table">
+  <tr>
+    <th class="t-head"> {{ asset.ticker }} Held All Time </th>
+    <th class="t-head"> {{ asset.ticker }} Sold All Time </th>
+    <th class="t-head"> Fiat Total Invested All Time  </th>
+    <th class="t-head"> Fiat Gained Through Selling {{ asset.ticker }} </th>
+
+  </tr>
+  <tr>
+  <td class="t-data">{{ asset.AHAT  }}</td>
+  <td class="t-data"> {{ asset.ASAT  }}</td>
+  <td class="t-data">{{ asset.FATT | currency }}</td>
+  <td class="t-data">{{ asset.FG | currency }}</td>
+  </tr>
 </table>
     </section>
 

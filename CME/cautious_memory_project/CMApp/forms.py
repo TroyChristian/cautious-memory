@@ -58,6 +58,7 @@ class CustomUserCreationForm(forms.Form):
 #     asset_value = forms.DecimalField(max_digits=12, decimal_places=8)
 
 class TxForm(ModelForm):
+
     class Meta:
         model = Transaction
         fields = ['type','asset_amount', 'fiat_amount', 'tx_asset']
@@ -65,6 +66,7 @@ class TxForm(ModelForm):
         asset_amount = forms.DecimalField(max_digits=12, decimal_places=8)
         widgets = {'tx_asset': forms.HiddenInput()}
 
+    
 
 
 
