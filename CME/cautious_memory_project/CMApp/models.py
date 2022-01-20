@@ -62,10 +62,7 @@ class Asset(models.Model):
 
         self.update_CPA()
 
-        #created_tx = Transaction(tx_asset, type, fiat_arg, asset_arg)
 
-
-        #return  created_tx
 
 
 
