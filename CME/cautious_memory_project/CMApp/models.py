@@ -60,7 +60,7 @@ class Asset(models.Model):
 
         if tx.type == "Spend":
             self.CAH -= tx.asset_amount
-            
+
         if tx.type == "Acquire":
             self.CAH += tx.asset_amount
 
@@ -124,11 +124,9 @@ class Transaction(models.Model):
     tx_profit_loss = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_cap_upon_creation = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
 
+  # ['date_created', 'tx_asset', 'type',  'fiat_amount', 'asset_amount', 'assset_cap_upon_creation', 'tx_profit_loss']
 
 
-    def __repr__(self):
-        rep = f"{self.tx_asset.ticker} transaction in {self.tx_asset.owner_portfolio}'s portfolio."
-        return rep
 
 ###USER MODEL SIGNALS###
 

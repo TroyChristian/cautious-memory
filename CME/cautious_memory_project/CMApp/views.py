@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import login, logout
 from PIL import Image
 from decimal import Decimal
+import csv
 
 
 # Create your views here.
@@ -134,3 +135,18 @@ def delete_asset(request, asset, asset_id):
         current_asset.delete()
         #user_assets = Asset.objects.filter(owner_portfolio = request.user.id)
         return HttpResponseRedirect(reverse('IndexView'))
+
+
+def export_asset_csv(request, asset_id):
+    asset = Asset.objects.filter(id=asset_id).get() # grab the asset
+    ticker = asset.ticker
+    transaction_qs = Transaction.objects.filter(tx_asset_id=asset_id).values_list('date_created', 'tx_asset', 'type',  'fiat_amount', 'asset_amount',) # Grab the tx's of the asset
+    response = HttpResponse(
+    content_type='text/csv',
+    headers={'Content-Disposition': 'attachment;filename="asset_history.csv"'},
+    )
+    writer = csv.writer(response)
+    writer.writerow(['date_created', ticker, 'type',  'fiat', 'asset',])
+    for tx in transaction_qs:
+        writer.writerow(tx)
+    return response
