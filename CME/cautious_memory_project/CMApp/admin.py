@@ -17,11 +17,6 @@ class AssetAdmin(admin.ModelAdmin):
     list_display = ("owner_portfolio", "ticker")
 
 
-@admin.register(myModels.Journal)
-class JournalAdmin(admin.ModelAdmin):
-    list_display = ("tracked_asset",)
-
-
-@admin.register(myModels.Entry)
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ("journal", "entry_type", "fiat_value", "asset_value", "date" )
+@admin.register(myModels.Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ("tx_asset", "fiat_amount", "asset_amount", "date_created", "type", "tx_profit_loss", "asset_cap_upon_creation")
