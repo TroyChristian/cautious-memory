@@ -39,30 +39,16 @@ class Asset(models.Model):
             pic.save(self.photo.path, "PNG")
 
     def enter_tx(self, tx):
-        #tx = Transaction.objects.filter(id=tx_id).get()
         cap = self.CAP
         cap = cap if cap > 0 else (tx.fiat_amount / tx.asset_amount)
-
         if tx.type == "Buy":
-
-
-
-
             self.FATT += tx.fiat_amount
             self.FCI += tx.fiat_amount
             self.AHAT += tx.asset_amount
             self.CAH += tx.asset_amount
             tx.asset_cap_upon_creation = cap
 
-
-
-
         if tx.type == "Sell":
-
-
-
-
-
             profit_loss = tx.fiat_amount - (tx.asset_amount * cap)
             tx.tx_profit_loss = profit_loss
             tx.asset_cap_upon_creation = cap
@@ -72,20 +58,15 @@ class Asset(models.Model):
             self.ASAT += tx.asset_amount
             self.APL += profit_loss
 
-
-
         if tx.type == "Spend":
             self.CAH -= tx.asset_amount
-
-
+            
         if tx.type == "Acquire":
             self.CAH += tx.asset_amount
 
 
         self.update_CPA()
         tx.save()
-
-
         return
 
 
@@ -157,15 +138,3 @@ def create_user_portfolio(sender, instance, created, **kwargs):
         Portfolio.objects.create(owner=instance)
     return
 post_save.connect(create_user_portfolio, sender=User)
-
-###Asset Model Signals###
-# def adjust_CAP(sender, instance, **kwargs):
-#     try:
-#         instance.CAP = instance.CAH / instance.FCI
-#     except ZeroDivisionError:
-#         instance.CAP = 0
-#         return
-#     finally:
-#         return
-#
-# post_save.connect(adjust_CAP, sender=Asset)
