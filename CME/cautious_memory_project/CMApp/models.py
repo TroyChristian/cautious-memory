@@ -24,6 +24,10 @@ class Asset(models.Model):
     asset = models.DecimalField(max_digits=12, decimal_places=8, default=Decimal('0.00')) # A decimal places to represent a sat
     price_avg = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     photo = models.ImageField(default='small.png')
+    asset_sold = models.DecimalField(max_digits=10, decimal_places=5, null=True, blank=True)
+    fiat_made = models.DecimalField(max_digits=10, decimal_places=5, null=True, blank=True)
+    price_avg_sold = models.DecimalField(max_digits=10, decimal_places=5, null=True, blank=True)
+
 
 
     def save(self, *args, **kwargs):
@@ -146,7 +150,7 @@ class Entry(models.Model):
         asset = journal.tracked_asset
         if self.fiat_value == 0 or self.asset_value == 0:
             raise ValidationError('Fiat and Asset values must be greater than zero')
-        
+
         if self.entry_type == 'debit':
             if self.fiat_value > asset.fiat or self.asset_value > asset.asset:
                 raise ValidationError("You cannot debit more than your total fiat or asset values.")
