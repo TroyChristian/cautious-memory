@@ -1,11 +1,10 @@
 from django import forms
-from django.forms import ModelForm, fields
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from django.forms.widgets import TextInput
-from . models import Entry, Asset, Portfolio
+from . models import  Asset, Portfolio, Transaction
 from decimal import Decimal
 
 #class UserRegisterForm(UserCreationForm):
@@ -50,14 +49,18 @@ class CustomUserCreationForm(forms.Form):
 
 
 
-class EntryForm(ModelForm):
-    class Meta:
-        model = Entry
-        fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
-        widgets = {'journal': forms.HiddenInput()}
 
-    fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
-    asset_value = forms.DecimalField(max_digits=12, decimal_places=8)
+class TxForm(ModelForm):
+
+    class Meta:
+        model = Transaction
+        fields = ['type','asset_amount', 'fiat_amount', 'tx_asset']
+        fiat_amount = forms.DecimalField(max_digits=12, decimal_places=2)
+        asset_amount = forms.DecimalField(max_digits=12, decimal_places=8)
+        widgets = {'tx_asset': forms.HiddenInput()}
+
+
+
 
 
 
