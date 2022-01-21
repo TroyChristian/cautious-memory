@@ -96,9 +96,13 @@ def new_tx(request, asset, asset_id):
             portfolio = Portfolio.objects.filter(owner=request.user.id).get()
             assets = Asset.objects.filter(owner_portfolio=portfolio)
             current_asset = assets.filter(pk=asset_id).get()
-            current_asset.create_tx(form.data['type'], form.data['asset_amount'], form.data['fiat_amount'])
             form.save()
+            last_tx_qs = Transaction.objects.all()
+            tx_list = list(last_tx_qs)
+            last_tx = tx_list[-1]
+            current_asset.enter_tx(last_tx)
             current_asset.save()
+
 
 
     return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, 'asset_id':asset_id}))
@@ -112,8 +116,12 @@ def new_tx(request, asset, asset_id):
 
 def delete_entry(request, asset, tx_id):
     current_entry = Transaction.objects.filter(id=tx_id).get()
-    asset = current_entry.tx_asset.ticker
+    asset_ticker = current_entry.tx_asset.ticker
     asset_id = current_entry.tx_asset.id
+    asset = Asset.objects.filter(id=asset_id).get()
+
+    asset.delete_tx(tx_id)
+    asset.save()
     current_entry.delete()
     return HttpResponseRedirect(reverse('NewEntry', kwargs={'asset':asset, "asset_id":asset_id}))
 

@@ -29,43 +29,92 @@ class Asset(models.Model):
     CAP = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Current Average price
     APL = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00')) # Asset Profit/Loss
 
-    def create_tx(self, type, asset_arg, fiat_arg):
-        asset_arg = Decimal(asset_arg)
-        fiat_arg = Decimal(fiat_arg)
-        tx_asset = self.id
-        if type == "Buy":
-            self.FATT += fiat_arg
-            self.FCI += fiat_arg
-            self.AHAT += asset_arg
-            self.CAH += asset_arg
+    def save(self, *args, **kwargs):
+        super(Asset, self).save(*args, **kwargs)
+        SIZE = 100,100
+
+        if self.photo:
+            pic = Image.open(self.photo.path)
+            pic.thumbnail(SIZE, Image.LANCZOS)
+            pic.save(self.photo.path, "PNG")
+
+    def enter_tx(self, tx):
+        #tx = Transaction.objects.filter(id=tx_id).get()
+        cap = self.CAP
+        cap = cap if cap > 0 else (tx.fiat_amount / tx.asset_amount)
+
+        if tx.type == "Buy":
 
 
 
-        if type == "Sell":
-            if asset_arg > self.CAH:
-                return
 
-            profit_loss = fiat_arg - (asset_arg * self.CAP)
-            self.FCI -= (asset_arg * self.CAP)
-            self.CAH -= asset_arg
-            self.FG += fiat_arg
-            self.ASAT += asset_arg
+            self.FATT += tx.fiat_amount
+            self.FCI += tx.fiat_amount
+            self.AHAT += tx.asset_amount
+            self.CAH += tx.asset_amount
+            tx.asset_cap_upon_creation = cap
+
+
+
+
+        if tx.type == "Sell":
+
+
+
+
+
+            profit_loss = tx.fiat_amount - (tx.asset_amount * cap)
+            tx.tx_profit_loss = profit_loss
+            tx.asset_cap_upon_creation = cap
+            self.FCI -= (tx.asset_amount * cap)
+            self.CAH -= tx.asset_amount
+            self.FG += tx.fiat_amount
+            self.ASAT += tx.asset_amount
             self.APL += profit_loss
 
 
-        if type == "Spend":
-            self.CAH -= asset_arg
+
+        if tx.type == "Spend":
+            self.CAH -= tx.asset_amount
 
 
-        if type == "Acquire":
-            self.CAH += asset_arg
+        if tx.type == "Acquire":
+            self.CAH += tx.asset_amount
+
 
         self.update_CPA()
+        tx.save()
+
+
+        return
 
 
 
+    def delete_tx(self, tx_id):
+        tx = Transaction.objects.filter(id=tx_id).get()
+
+        if tx.type == "Buy":
+            self.FATT -= tx.fiat_amount
+            self.FCI -= tx.fiat_amount
+            self.AHAT -= tx.asset_amount
+            self.CAH -= tx.asset_amount
+
+        if tx.type == "Sell":
+            #self.FCI += tx.fiat_amount
+            self.FCI += (tx.asset_amount * tx.asset_cap_upon_creation)
+            self.CAH += tx.asset_amount
+            self.FG -= tx.fiat_amount
+            self.ASAT -= tx.asset_amount
+            self.APL -= tx.tx_profit_loss
 
 
+        if type == "Spend":
+            self.CAH += tx.asset_amount
+
+        if type == "Acquire":
+            self.CAH -= tx.asset_amount
+
+        self.update_CPA()
 
 
         #update current price average (cost basis)
@@ -91,10 +140,14 @@ class Transaction(models.Model):
     ("Acquire", "Acquire")
     )
     type = models.CharField(null=False, choices=TX_TYPE_CHOICES, max_length=7, default='Buy')
+    tx_profit_loss = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
+    asset_cap_upon_creation = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
 
 
 
-
+    def __repr__(self):
+        rep = f"{self.tx_asset.ticker} transaction in {self.tx_asset.owner_portfolio}'s portfolio."
+        return rep
 
 ###USER MODEL SIGNALS###
 
