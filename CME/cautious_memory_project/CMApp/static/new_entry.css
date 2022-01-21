@@ -10,12 +10,11 @@
 }
 
 .nav-container {
-    margin: 15px 15px;
+    margin: 15px 30px;
     border: solid white 3px;
-    border-radius: 10px;
     background-color: white;
     box-shadow: black 3px 3px;
-    margin-right: 950px;
+    margin-right: 940px;
     color: blue;
 }
 
@@ -95,6 +94,7 @@ table {
 }
 
 .journal-form {
+    padding-left: 5px;
     margin-top: 20px;
     border: black solid 2.5px;
 }
@@ -104,6 +104,8 @@ table {
 .j-data, .j-head {
     border: black solid 3px;
     margin: 0 15px 0 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .scroll {
