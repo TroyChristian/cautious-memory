@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
-from . forms import  CustomUserCreationForm, AssetForm, TxForm
+from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -26,8 +27,38 @@ def index(request):
 
         return render(request, 'CMApp/dashboard.html', context)
 
-    else:
-        return HttpResponseRedirect(reverse('login'))
+    if request.method=="GET":
+        return redirect('login')
+
+
+# def login(request):
+#     if request.method == "GET":
+#         context = {'form': LoginForm()}
+#         return render(request, 'CMApp/login.html', context)
+#
+#     if request.method == "POST":
+#         form = LoginForm(request.POST)
+#         #if form.is_valid():
+#
+#         username = str(form.fields['username'])
+#         password = str(form.fields['password'])
+#
+#         user = authenticate(username=username, password=password)
+#
+#         if user:
+#             return HttpResponseRedirect(reverse('IndexView'))
+#
+#         else:
+#             context = {'form': LoginForm()}
+#             return HttpResponseRedirect(reverse('IndexView'))
+#     return HttpResponseRedirect(reverse('IndexView'))
+
+
+
+
+
+
+
 
 
 

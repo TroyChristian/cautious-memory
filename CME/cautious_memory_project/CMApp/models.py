@@ -81,7 +81,6 @@ class Asset(models.Model):
             self.CAH -= tx.asset_amount
 
         if tx.type == "Sell":
-            #self.FCI += tx.fiat_amount
             self.FCI += (tx.asset_amount * tx.asset_cap_upon_creation)
             self.CAH += tx.asset_amount
             self.FG -= tx.fiat_amount
@@ -98,7 +97,7 @@ class Asset(models.Model):
         self.update_CPA()
 
 
-        #update current price average (cost basis)
+        
     def update_CPA(self):
         try:
             self.CAP = self.FCI / self.CAH
@@ -124,7 +123,6 @@ class Transaction(models.Model):
     tx_profit_loss = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
     asset_cap_upon_creation = models.DecimalField(null=True, blank=True, max_digits=12, decimal_places=2, default=Decimal('0.00'))
 
-  # ['date_created', 'tx_asset', 'type',  'fiat_amount', 'asset_amount', 'assset_cap_upon_creation', 'tx_profit_loss']
 
 
 
