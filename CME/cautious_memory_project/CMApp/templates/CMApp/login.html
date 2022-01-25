@@ -28,7 +28,7 @@
     
       <div class="container col-5 p-5"> 
       <div class="form-group d-flex justify-content-center my-5">
-      <form class="form-control form-control-md col-3 justify-content-center">
+      <form class="form-control form-control-md col-3 justify-content-center" method="post">
         {% csrf_token %}
         
         {{form|crispy}}
