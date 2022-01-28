@@ -19,46 +19,47 @@
 
 <body class="main">
   {% load crispy_forms_tags %}
-  <div class="container">
+  
 <h3> SnapShot </h3>
 
 
-    <section class="gird-container">
-      <table class="top-table">
+      <div class="table-one container col-sm-1">
+      <table class="first-table table table-primary">
        <tr>
-         <th class="t-head"> Fiat Amount </th>
-         <th class="t-head"> {{ asset.ticker }} Amount </th>
-         <th class="t-head"> Average Price of your {{ asset.ticker }} holdings  </th>
+         <th class="t-head col-1"> Fiat Amount </th>
+         <th class="t-head col-1"> {{ asset.ticker }} Amount </th>
+         <th class="t-head col-1"> Average Price of your {{ asset.ticker }} holdings  </th>
          <th class="t-head"> Your Profit/Loss {{asset.ticker }} </th>
 
        </tr>
        <tr>
-       <td class="t-data">{{ asset.FCI | currency }}</td>
-       <td class="t-data"> {{ asset.CAH }}</td>
-       <td class="t-data">{{ asset.CAP | currency }}</td>
-       <td class="t-data">{{ asset.APL | currency }}</td>
-       </tr>
+       <td class="t-data col-1">{{ asset.FCI | currency }}</td>
+       <td class="t-data col-1"> {{ asset.CAH }}</td>
+       <td class="t-data col-1">{{ asset.CAP | currency }}</td>
+       <td class="t-data col-1">{{ asset.APL | currency }}</td>
+      </tr>
+    </table>
+     </div>
 
-
-
-
-   </table>
-   <table class="top-table">
+    <div class="table-two container col-sm-1">
+   <table class="second-table table table-primary">
      <tr>
-       <th class="t-head"> {{ asset.ticker }} Held All Time </th>
-       <th class="t-head"> {{ asset.ticker }} Sold All Time </th>
-       <th class="t-head"> Fiat Total Invested All Time  </th>
-       <th class="t-head"> Fiat Gained Through Selling {{ asset.ticker }} </th>
+       <th class="t-head col-1"> {{ asset.ticker }} Held All Time </th>
+       <th class="t-head col-1"> {{ asset.ticker }} Sold All Time </th>
+       <th class="t-head col-1"> Fiat Total Invested All Time  </th>
+       <th class="t-head col-1"> Fiat Gained Through Selling {{ asset.ticker }} </th>
 
      </tr>
      <tr>
-     <td class="t-data">{{ asset.AHAT  }}</td>
-     <td class="t-data"> {{ asset.ASAT  }}</td>
-     <td class="t-data">{{ asset.FATT | currency }}</td>
-     <td class="t-data">{{ asset.FG | currency }}</td>
+     <td class="t-data col-1">{{ asset.AHAT  }}</td>
+     <td class="t-data col-1"> {{ asset.ASAT  }}</td>
+     <td class="t-data col-1">{{ asset.FATT | currency }}</td>
+     <td class="t-data col-1">{{ asset.FG | currency }}</td>
      </tr>
    </table>
-    </section>
+  </div>  
+   
+
 <div class="move-up">
 <h3> New Entry </h3>
 <form class="entry-form" method="POST">
@@ -76,7 +77,7 @@
   {% csrf_token %}
 
    <h3>  {{ asset.ticker }} Journal </h3>
-   <table class="my-2 p-2">
+   <table class="journal table table-striped my-2 p-2">
    <tr>
      <th class="t-head j-head"> Entry Type </th>
      <th class="t-head j-head"> Date </th>
@@ -95,7 +96,6 @@
     </tr>
     {% endfor %}
     </table>
-   </div>
 </form>
 
 
