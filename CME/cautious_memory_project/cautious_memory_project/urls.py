@@ -15,9 +15,10 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
-import CMApp.urls
+from django.urls import path, include, reverse_lazy
+import CMApp.urls #imports views
 from django.contrib.auth import views as auth_views
+import CMApp.views as views #! imports views again
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -26,6 +27,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='CMApp/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='CMApp/logout.html'), name='logout'),
     path('password/', auth_views.PasswordChangeView.as_view(template_name='CMApp/change-password.html'), name='password'),
+    path('password-changed/', views.PasswordsChangeDoneView.as_view(template_name="CMApp/password_change_done.html", success_url = reverse_lazy('IndexView')), name="password_change_done"),
     path('admin/', admin.site.urls),
     path('', include(CMApp.urls)),
 
