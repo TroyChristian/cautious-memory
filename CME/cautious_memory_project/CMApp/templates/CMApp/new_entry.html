@@ -20,16 +20,16 @@
 <body class="main">
   {% load crispy_forms_tags %}
   
-<h3> SnapShot </h3>
+<h3> Asset overview </h3>
 
 
-      <div class="table-one container col-sm-1">
-      <table class="first-table table table-primary">
+      <div class="table-one container col-6">
+      <table class="first-table table table-primary position-static">
        <tr>
-         <th class="t-head col-1"> Fiat Amount </th>
-         <th class="t-head col-1"> {{ asset.ticker }} Amount </th>
-         <th class="t-head col-1"> Average Price of your {{ asset.ticker }} holdings  </th>
-         <th class="t-head"> Your Profit/Loss {{asset.ticker }} </th>
+         <th class="t-head col-2"> Fiat Amount </th>
+         <th class="t-head col-2"> {{ asset.ticker }} Amount </th>
+         <th class="t-head col-2"> Average Price of your {{ asset.ticker }} holdings  </th>
+         <th class="t-head col-2"> Your Profit/Loss {{asset.ticker }} </th>
 
        </tr>
        <tr>
@@ -41,7 +41,7 @@
     </table>
      </div>
 
-    <div class="table-two container col-sm-1">
+    <div class="table-two container col-6">
    <table class="second-table table table-primary">
      <tr>
        <th class="t-head col-1"> {{ asset.ticker }} Held All Time </th>
@@ -61,7 +61,7 @@
    
 
 <div class="move-up">
-<h3> New Entry </h3>
+<h3> New Transaction </h3>
 <form class="entry-form" method="POST">
   {% csrf_token %}
    {{ entry_form }}
@@ -76,8 +76,8 @@
 <form class="journal-form">
   {% csrf_token %}
 
-   <h3>  {{ asset.ticker }} Journal </h3>
-   <table class="journal table table-striped my-2 p-2">
+   <h3>  {{ asset.ticker }} Transaction ledger</h3>
+   <table class="journal table table-striped">
    <tr>
      <th class="t-head j-head"> Entry Type </th>
      <th class="t-head j-head"> Date </th>
