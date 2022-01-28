@@ -1,17 +1,19 @@
 from django.shortcuts import render, HttpResponse, redirect
-from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm, UpdateUserForm
+from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from . models import Asset, Portfolio, Transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth import login, logout
 from PIL import Image
 from decimal import Decimal
 import csv
-from django.contrib.auth import update_session_auth_hash
+import django.contrib.auth
+import django.views.generic
+
 
 
 # Create your views here.
@@ -35,26 +37,11 @@ def my_profile(request, user_id):
     user = User.objects.filter(id=user_id).get()
     user_id = user_id
     if request.method=="GET":
-        form = UpdateUserForm()
-        return render(request, 'CMApp/my_profile.html', {'form':form})
+        return render(request, 'CMApp/my_profile.html')
 
 
-    if request.method=="POST":
-        username = user.username
-        form = UpdateUserForm(request.POST)
-        if form.is_valid():
-            set_new_password = form.cleaned_data.get("verify_new_password")
-            user.password = set_new_password
-            update_session_auth_hash(request, request.user)
-            user.save()
 
 
-    user_assets = Asset.objects.filter(owner_portfolio = user_id)
-    context = {"user":user,
-                "assets":user_assets,
-
-                }
-    return render(request, 'CMApp/dashboard.html', context)
 
 
 
@@ -64,7 +51,7 @@ def register(request):
         if f.is_valid():
             f.save()
             messages.success(request, 'Account created successfully')
-            return redirect('register')
+            return redirect('login')
 
     else:
         f = CustomUserCreationForm()
@@ -174,3 +161,7 @@ def export_asset_csv(request, asset_id):
     for tx in transaction_qs:
         writer.writerow(tx)
     return response
+
+
+class PasswordsChangeDoneView(django.views.generic.TemplateView):
+    success_url = reverse_lazy("IndexView")
