@@ -57,6 +57,8 @@
 .top-table {
    grid-template-rows: repeat(3, 3fr);
    border: black solid 2.5px;
+   padding-bottom: 15px;
+   margin-bottom: 15px;
 }
 
 .move-up {
@@ -108,12 +110,17 @@ table {
     padding-bottom: 5px;
 }
 
-.scroll {
-    overflow-y: scroll;
-}
+
 
 
 
 a:hover {
     color: red;
+}
+
+.CSV-link {
+    position: absolute;
+    color: black;
+    border: white solid 2px;
+    background-color: blue;
 }
