@@ -1,0 +1,21 @@
+{% extends 'CMApp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<body>
+<h3> Change Username or Password </h3>
+<form class="" method="POST">
+  {% csrf_token %}
+   
+   {{form|crispy}}
+
+   <input type="submit" value="submit">
+
+   </form>
+
+
+<h3> Set 2FA Public Key </h3>
+<h3> Delete Account </h3>
+
+{% endblock %}
+
+</body>

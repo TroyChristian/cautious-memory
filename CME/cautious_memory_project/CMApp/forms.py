@@ -14,7 +14,21 @@ class LoginForm(forms.Form):
 
 
 
+class UpdateUserForm(forms.Form):
 
+    new_password = forms.CharField(label='Enter New Password', widget=forms.PasswordInput)
+    verify_new_password = forms.CharField(label='Verify New Password', widget=forms.PasswordInput)
+
+
+
+    def clean_verify_new_password(self):
+        password1 = self.cleaned_data.get('new_password')
+        password2 = self.cleaned_data.get('verify_new_password')
+
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Password don't match")
+
+        return password2
 
 
 class CustomUserCreationForm(forms.Form):

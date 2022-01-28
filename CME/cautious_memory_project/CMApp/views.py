@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm
+from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm, UpdateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -11,6 +11,7 @@ from django.contrib.auth import login, logout
 from PIL import Image
 from decimal import Decimal
 import csv
+from django.contrib.auth import update_session_auth_hash
 
 
 # Create your views here.
@@ -30,38 +31,30 @@ def index(request):
     if request.method=="GET":
         return redirect('login')
 
-
-# def login(request):
-#     if request.method == "GET":
-#         context = {'form': LoginForm()}
-#         return render(request, 'CMApp/login.html', context)
-#
-#     if request.method == "POST":
-#         form = LoginForm(request.POST)
-#         #if form.is_valid():
-#
-#         username = str(form.fields['username'])
-#         password = str(form.fields['password'])
-#
-#         user = authenticate(username=username, password=password)
-#
-#         if user:
-#             return HttpResponseRedirect(reverse('IndexView'))
-#
-#         else:
-#             context = {'form': LoginForm()}
-#             return HttpResponseRedirect(reverse('IndexView'))
-#     return HttpResponseRedirect(reverse('IndexView'))
+def my_profile(request, user_id):
+    user = User.objects.filter(id=user_id).get()
+    user_id = user_id
+    if request.method=="GET":
+        form = UpdateUserForm()
+        return render(request, 'CMApp/my_profile.html', {'form':form})
 
 
+    if request.method=="POST":
+        username = user.username
+        form = UpdateUserForm(request.POST)
+        if form.is_valid():
+            set_new_password = form.cleaned_data.get("verify_new_password")
+            user.password = set_new_password
+            update_session_auth_hash(request, request.user)
+            user.save()
 
 
+    user_assets = Asset.objects.filter(owner_portfolio = user_id)
+    context = {"user":user,
+                "assets":user_assets,
 
-
-
-
-
-
+                }
+    return render(request, 'CMApp/dashboard.html', context)
 
 
 

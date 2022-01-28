@@ -25,6 +25,7 @@ urlpatterns = [
     #path('accounts/', include('django.contrib.auth.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='CMApp/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='CMApp/logout.html'), name='logout'),
+    path('password/', auth_views.PasswordChangeView.as_view(template_name='CMApp/change-password.html'), name='password'),
     path('admin/', admin.site.urls),
     path('', include(CMApp.urls)),
 
