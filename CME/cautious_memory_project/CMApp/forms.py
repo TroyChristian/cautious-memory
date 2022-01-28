@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -7,7 +8,27 @@ from django.core.validators import MinValueValidator
 from . models import  Asset, Portfolio, Transaction
 from decimal import Decimal
 
-#class UserRegisterForm(UserCreationForm):
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
+    password = forms.CharField(label='Enter password', widget=forms.PasswordInput)
+
+
+
+class UpdateUserForm(forms.Form):
+
+    new_password = forms.CharField(label='Enter New Password', widget=forms.PasswordInput)
+    verify_new_password = forms.CharField(label='Verify New Password', widget=forms.PasswordInput)
+
+
+
+    def clean_verify_new_password(self):
+        password1 = self.cleaned_data.get('new_password')
+        password2 = self.cleaned_data.get('verify_new_password')
+
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Password don't match")
+
+        return password2
 
 
 class CustomUserCreationForm(forms.Form):
