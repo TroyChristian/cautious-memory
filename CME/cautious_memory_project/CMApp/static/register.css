@@ -1,0 +1,14 @@
+.body {
+    background-color: rgb(0, 174, 225);
+}
+
+.reg-from {
+    padding: 15px 440px;
+    border: black 2px solid;
+    background-color: white;
+}
+
+.btn-primary {
+    margin-top: 5px;
+    padding-bottom: 5px;
+}

@@ -8,10 +8,13 @@ html {
     background-color: rgb(0, 174, 255);
 }
 
+.main {
+    background-color: rgb(0, 174, 255);
+}
+
 
 .title {
     border:rgb(0, 174, 255) solid 10px;
-    
     background-color: rgb(0, 174, 255);
 }
 
