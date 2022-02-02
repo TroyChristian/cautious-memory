@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -7,7 +8,14 @@ from django.core.validators import MinValueValidator
 from . models import  Asset, Portfolio, Transaction
 from decimal import Decimal
 
-#class UserRegisterForm(UserCreationForm):
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Enter Username', min_length=4, max_length=150)
+    password = forms.CharField(label='Enter password', widget=forms.PasswordInput)
+
+
+
+
+
 
 
 class CustomUserCreationForm(forms.Form):
@@ -48,14 +56,7 @@ class CustomUserCreationForm(forms.Form):
         return user
 
 
-# class EntryForm(ModelForm):
-#     class Meta:
-#         model = Entry
-#         fields = ['entry_type', 'date', 'fiat_value', 'asset_value', 'journal']
-#         widgets = {'journal': forms.HiddenInput()}
-#
-#     fiat_value = forms.DecimalField(max_digits=12, decimal_places=2)
-#     asset_value = forms.DecimalField(max_digits=12, decimal_places=8)
+
 
 class TxForm(ModelForm):
 
@@ -66,7 +67,7 @@ class TxForm(ModelForm):
         asset_amount = forms.DecimalField(max_digits=12, decimal_places=8)
         widgets = {'tx_asset': forms.HiddenInput()}
 
-    
+
 
 
 

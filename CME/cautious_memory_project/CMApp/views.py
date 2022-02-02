@@ -1,15 +1,19 @@
 from django.shortcuts import render, HttpResponse, redirect
-from . forms import  CustomUserCreationForm, AssetForm, TxForm
+from . forms import  CustomUserCreationForm, AssetForm, TxForm, LoginForm
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from . models import Asset, Portfolio, Transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth import login, logout
 from PIL import Image
 from decimal import Decimal
 import csv
+import django.contrib.auth
+import django.views.generic
+
 
 
 # Create your views here.
@@ -26,8 +30,15 @@ def index(request):
 
         return render(request, 'CMApp/dashboard.html', context)
 
-    else:
-        return HttpResponseRedirect(reverse('login'))
+    if request.method=="GET":
+        return redirect('login')
+
+def my_profile(request, user_id):
+    user = User.objects.filter(id=user_id).get()
+    user_id = user_id
+    if request.method=="GET":
+        return render(request, 'CMApp/my_profile.html')
+
 
 
 
@@ -40,7 +51,7 @@ def register(request):
         if f.is_valid():
             f.save()
             messages.success(request, 'Account created successfully')
-            return redirect('register')
+            return redirect('login')
 
     else:
         f = CustomUserCreationForm()
@@ -150,3 +161,7 @@ def export_asset_csv(request, asset_id):
     for tx in transaction_qs:
         writer.writerow(tx)
     return response
+
+
+class PasswordsChangeDoneView(django.views.generic.TemplateView):
+    success_url = reverse_lazy("IndexView")

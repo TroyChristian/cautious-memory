@@ -10,54 +10,62 @@
 
 <head>
   <link rel="stylesheet" href="{% static '/new_entry.css' %}">
+  <link 
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
+  crossorigin="anonymous">
 </head>
 
 <body class="main">
-  <div class="container">
-<h3> SnapShot </h3>
+  {% load crispy_forms_tags %}
+  
+<h3> Asset overview </h3>
 
 
-    <section class="gird-container">
-  <table class="top-table">
-    <tr>
-      <th class="t-head"> Fiat Amount </th>
-      <th class="t-head"> {{ asset.ticker }} Amount </th>
-      <th class="t-head"> Average Price of your {{ asset.ticker }} holdings  </th>
-      <th class="t-head"> Your Profit/Loss {{asset.ticker }} </th>
+      <div class="table-one container col-6">
+      <table class="first-table table table-primary position-static">
+       <tr>
+         <th class="t-head col-2"> Fiat Amount </th>
+         <th class="t-head col-2"> {{ asset.ticker }} Amount </th>
+         <th class="t-head col-2"> Average Price of your {{ asset.ticker }} holdings  </th>
+         <th class="t-head col-2"> Your Profit/Loss {{asset.ticker }} </th>
 
-    </tr>
-    <tr>
-    <td class="t-data">{{ asset.FCI | currency }}</td>
-    <td class="t-data"> {{ asset.CAH }}</td>
-    <td class="t-data">{{ asset.CAP | currency }}</td>
-    <td class="t-data">{{ asset.APL | currency }}</td>
-    </tr>
+       </tr>
+       <tr>
+       <td class="t-data col-1">{{ asset.FCI | currency }}</td>
+       <td class="t-data col-1"> {{ asset.CAH }}</td>
+       <td class="t-data col-1">{{ asset.CAP | currency }}</td>
+       <td class="t-data col-1">{{ asset.APL | currency }}</td>
+      </tr>
+    </table>
+     </div>
 
+    <div class="table-two container col-6">
+   <table class="second-table table table-primary">
+     <tr>
+       <th class="t-head col-1"> {{ asset.ticker }} Held All Time </th>
+       <th class="t-head col-1"> {{ asset.ticker }} Sold All Time </th>
+       <th class="t-head col-1"> Fiat Total Invested All Time  </th>
+       <th class="t-head col-1"> Fiat Gained Through Selling {{ asset.ticker }} </th>
 
+     </tr>
+     <tr>
+     <td class="t-data col-1">{{ asset.AHAT  }}</td>
+     <td class="t-data col-1"> {{ asset.ASAT  }}</td>
+     <td class="t-data col-1">{{ asset.FATT | currency }}</td>
+     <td class="t-data col-1">{{ asset.FG | currency }}</td>
+     </tr>
+   </table>
+  </div>  
+   
 
-
-</table>
-<table class="top-table">
-  <tr>
-    <th class="t-head"> {{ asset.ticker }} Held All Time </th>
-    <th class="t-head"> {{ asset.ticker }} Sold All Time </th>
-    <th class="t-head"> Fiat Total Invested All Time  </th>
-    <th class="t-head"> Fiat Gained Through Selling {{ asset.ticker }} </th>
-
-  </tr>
-  <tr>
-  <td class="t-data">{{ asset.AHAT  }}</td>
-  <td class="t-data"> {{ asset.ASAT  }}</td>
-  <td class="t-data">{{ asset.FATT | currency }}</td>
-  <td class="t-data">{{ asset.FG | currency }}</td>
-  </tr>
-</table>
-    </section>
 <div class="move-up">
-<h3> New Entry </h3>
+<h3> New Transaction </h3>
 <form class="entry-form" method="POST">
   {% csrf_token %}
    {{ entry_form }}
+   {{form|crispy}}
 
    <input type="submit" value="submit">
 
@@ -67,8 +75,9 @@
           diffrence from the top form table and bottom on the screen and 'j-head is the same'-->
 <form class="journal-form">
   {% csrf_token %}
-   <h3>  {{ asset.ticker }} Journal </h3>
-   <table>
+
+   <h3>  {{ asset.ticker }} Transaction ledger</h3>
+   <table class="journal table table-striped">
    <tr>
      <th class="t-head j-head"> Entry Type </th>
      <th class="t-head j-head"> Date </th>
@@ -79,17 +88,28 @@
     </tr>
      {% for entry in entries %}
      <tr>
-    <td class="t-data j-data"> {{ entry.type }} </td>
-    <td class="t-data j-data"> {{ entry.date_created }} </td>
-    <td class="t-data j-data"> {{ entry.fiat_amount}} </td>
-    <td class="t-data j-data"> {{ entry.asset_amount }} </td>
-    <td> <a href="{% url 'DeleteEntry' entry.tx_asset.ticker entry.id %} "> delete entry </a>  </td>
+       <td class="t-data j-data"> {{ entry.type }} </td>
+       <td class="t-data j-data"> {{ entry.date_created }} </td>
+       <td class="t-data j-data"> {{ entry.fiat_amount}} </td>
+       <td class="t-data j-data"> {{ entry.asset_amount }} </td>
+  <td> <a href="{% url 'DeleteEntry' entry.tx_asset.ticker entry.id %} "> delete entry </a>  </td>
     </tr>
     {% endfor %}
     </table>
-   </div>
 </form>
-<a href="{% url 'ExportAsset' asset.id %}"> Export Transactions as CSV </a> 
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+crossorigin="anonymous"></script>
+
+
+<a class="CSV-link" href="{% url 'ExportAsset' asset.id %}"> Export Transactions as CSV </a>
 </body>
 
 {% endblock %}

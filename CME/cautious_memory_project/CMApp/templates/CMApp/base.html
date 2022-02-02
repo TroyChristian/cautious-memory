@@ -1,4 +1,4 @@
-{% csrf_token %}
+
 
 {% block title %}
 {% if messages %}
@@ -12,12 +12,16 @@
 {% endblock %}
 
 {% block nav %}
-<div class="nav-container">
-<ul class="nav-list">
-  <li class="list-link"> <a href="{% url 'logout' %}">Logout </a></li>
-  <li class="list-link"> <a href="{% url 'IndexView' %}"> Dashboard </a> </li>
-  <li class="list-link"> <a href="{% url 'NewAsset' %}"> Add Asset </a> </li>
-</ul>  
+<div class="nav-container col-4">
+<ul class="nav-list nav nav-pills p">
+  <li class="list-link nav-item"> <a class="nav-link" href="{% url 'logout' %}">Logout </a></li>
+  <li class="list-link nav-item"> <a class="nav-link" href="{% url 'IndexView' %}"> Dashboard </a> </li>
+  <li class="list-link nav-item"> <a class="nav-link" href="{% url 'NewAsset' %}"> Add Asset </a> </li>
+  {% if user.is_authenticated %}
+  <li class="list-link nav-item"> <a class="nav-link" href="{% url 'MyProfile' user.id %}"> My Profile </a> </li>
+  {% endif %}
+
+</ul>
 </div>
 
 {% endblock %}

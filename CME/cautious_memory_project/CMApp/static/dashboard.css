@@ -25,24 +25,20 @@
 }
 
 .nav-list {
+    padding: 2px 4px 2px 4px;
     display: flex;
     flex-direction: row;
-    padding: 5px 6px;
-    list-style-type: none;
 }
 
-.list-link {
-    padding: 5px;
-    justify-content: start;
+
+li {
+    padding: 0px 2px 0px 2px;
+    list-style-type: none;
+    font-family: 'Heebo', sans-serif;
 }
 
 a:hover {
     color: red;
-}
-
-li, ul {
-    list-style-type: none;
-    font-family: 'Heebo', sans-serif;
 }
 
 .outter-container {
